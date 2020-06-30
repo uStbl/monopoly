@@ -7,9 +7,9 @@ namespace monopoly
     abstract class BoardSpace
     {
         protected string name;
-        public abstract void onPlayerLanding(Player player);
+        public abstract void OnPlayerLanding(Player player);
 
-        public string getName()
+        public string GetName()
         {
             return name;
         }

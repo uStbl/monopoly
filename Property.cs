@@ -16,22 +16,22 @@ namespace monopoly
             this.price = price;
             this.rent = rent;
         }
-        public override void onPlayerLanding(Player player)
+        public override void OnPlayerLanding(Player player)
         {
 
             if (owner == null)
             {
-                promptToBuy(player);
+                PromptToBuy(player);
             }
             else
             {
-                collectRent(player);
+                CollectRent(player);
             }
         }
 
-        private void promptToBuy(Player player)
+        private void PromptToBuy(Player player)
         {
-            int playerMoney = player.getMoney();
+            int playerMoney = player.GetMoney();
             if (playerMoney >= price)
             {
                 Console.WriteLine("Would you like to purchase this property?");
@@ -48,7 +48,7 @@ namespace monopoly
                     if (input == ConsoleKey.Y)
                     {
                         owner = player;
-                        player.setMoney(playerMoney - price);
+                        player.SetMoney(playerMoney - price);
                         Console.WriteLine("Congratulations! You have bought {0}.", name);
                     }
                     else if (input == ConsoleKey.N)
@@ -63,10 +63,10 @@ namespace monopoly
             }
         }
 
-        private void collectRent(Player player)
+        private void CollectRent(Player player)
         {
-            Console.WriteLine("This property is owned by player {0}!" + owner.getId());
-            Console.WriteLine("You paid player {0} ${1}.", owner.getId(), rent);
+            Console.WriteLine("This property is owned by player {0}!" + owner.GetId());
+            Console.WriteLine("You paid player {0} ${1}.", owner.GetId(), rent);
         }
     }
 }
