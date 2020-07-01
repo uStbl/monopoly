@@ -9,8 +9,8 @@ namespace monopoly
         static private int totalSpaces; // The number of spaces on the game board.
 
         private int id; // Must be between 1 - # of players in the game.
-        private bool isInGame; // If true, the player is still playing. If false, the player has lost. Cannot be set from false to true.
-        private int money; // Must be >= 0.
+        private bool isInGame; // If true, this player is still playing. If false, this player has lost. Cannot be set from false to true.
+        private int money;
         private int position; // Must be between 0 - (totalSpaces - 1).
         private int remainingJailTurns;
 
@@ -34,9 +34,17 @@ namespace monopoly
             return money;
         }
 
-        public void SetMoney(int money)
+        public void AddMoney(int money)
         {
-            this.money = money;
+            this.money += money;
+            Console.WriteLine("You now have {0}.", this.money);
+            if (this.money < 0)
+                OnBankrupt();
+        }
+
+        private void OnBankrupt() {
+            Console.WriteLine("You lost from going bankrupt! Better luck next time!");
+            isInGame = false;
         }
 
         public int GetPosition()
