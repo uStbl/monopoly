@@ -9,14 +9,19 @@ namespace monopoly
         private const int MaxDoubleRolls = 2;
 
         private Random rnd;
-        private BoardSpace[] boardSpaces;
+        private List<BoardSpace> boardSpaces;
         private int jailPosition;
         private List<Player> players;
+
+        public Game(List<BoardSpace> boardSpaces, List<Player> players)
+        {
+            // TODO assign args to fields, set jailPosition based on boardSpaces
+        }
 
         public void PlayGame()
         {
             bool gameIsOver = false;
-            while (!gameIsOver) //TODO: fix
+            while (!gameIsOver)
             {
                 foreach (Player currentPlayer in players)
                 {
@@ -61,6 +66,7 @@ namespace monopoly
         }
 
         // Roll dice and move [player].
+        // TODO print roll values and prompt player to roll each time
         private void DiceRoll(Player player)
         {
             int rollValue1;
@@ -74,7 +80,9 @@ namespace monopoly
 
                 if (rollsThisTurn >= 3 && rollValue1 == rollValue2)
                 {
+                    Console.WriteLine("You were sent to jail for rolling doubles 3 times.");
                     player.MoveTo(jailPosition);
+                    break;
                 }
                 else
                 {
