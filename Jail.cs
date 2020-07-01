@@ -8,7 +8,7 @@ namespace monopoly
     {
         public override void OnPlayerLanding(Player player)
         {
-            throw new NotImplementedException();
+            Console.WriteLine("...but you're just passing by.");
         }
     }
 }
