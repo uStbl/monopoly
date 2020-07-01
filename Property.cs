@@ -48,7 +48,7 @@ namespace monopoly
                     if (input == ConsoleKey.Y)
                     {
                         owner = player;
-                        player.SetMoney(playerMoney - price);
+                        player.AddMoney(-price);
                         Console.WriteLine("Congratulations! You have bought {0}.", name);
                     }
                     else if (input == ConsoleKey.N)
