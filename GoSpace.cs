@@ -7,6 +7,11 @@ namespace monopoly
     class GoSpace : BoardSpace
     {
         public const int PassMoney = 200;
+
+        public GoSpace() {
+            name = "Go";
+        }
+
         public override void OnPlayerLanding(Player player)
         {
             return;
