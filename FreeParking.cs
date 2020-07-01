@@ -8,7 +8,7 @@ namespace monopoly
     {
         public override void OnPlayerLanding(Player player)
         {
-            Console.WriteLine("You landed on free parking!");
+            return;
         }
     }
 }

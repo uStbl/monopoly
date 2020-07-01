@@ -23,7 +23,9 @@ namespace monopoly
                         JailDiceRoll(currentPlayer);
                     }
                     DiceRoll(currentPlayer);
-                    boardSpaces[currentPlayer.GetPosition()].OnPlayerLanding(currentPlayer);
+                    BoardSpace landedSpace = boardSpaces[currentPlayer.GetPosition()];
+                    Console.WriteLine("You have landed on {0}.", landedSpace.GetName());
+                    landedSpace.OnPlayerLanding(currentPlayer);
 
                     if (currentPlayer.HasLost())
                     {
