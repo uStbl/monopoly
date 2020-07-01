@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "532JBMUY1oxWR6x9s9Irt7Dbr/GpYibZLidK4uO/UzpWS33rBT3tUsAosv9RTTSr/8tqgHZBRMI+3UOI6an8Gw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\tyi\\source\\repos\\monopoly\\monopoly.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\tyi\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
+    "C:\\Users\\tyi\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.0.1\\microsoft.aspnetcore.app.ref.3.0.1.nupkg.sha512",
+    "C:\\Users\\tyi\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.0.3\\microsoft.netcore.app.host.win-x64.3.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
