@@ -15,21 +15,31 @@ namespace monopoly
 
         public void PlayGame()
         {
-            while (true) //TODO: fix
+            bool gameIsOver = false;
+            while (!gameIsOver) //TODO: fix
             {
                 foreach (Player currentPlayer in players)
                 {
-                    if (currentPlayer.GetRemainingJailTurns() > 0) {
+                    if (currentPlayer.GetRemainingJailTurns() > 0)
+                    {
                         JailDiceRoll(currentPlayer);
                     }
-                    DiceRoll(currentPlayer);
-                    BoardSpace landedSpace = boardSpaces[currentPlayer.GetPosition()];
-                    Console.WriteLine("You have landed on {0}.", landedSpace.GetName());
-                    landedSpace.OnPlayerLanding(currentPlayer);
+                    else
+                    {
+                        DiceRoll(currentPlayer);
+                        BoardSpace landedSpace = boardSpaces[currentPlayer.GetPosition()];
+                        Console.WriteLine("You have landed on {0}.", landedSpace.GetName());
+                        landedSpace.OnPlayerLanding(currentPlayer);
+                    }
 
                     if (currentPlayer.HasLost())
                     {
                         players.RemoveAt(currentPlayer.GetId() - 1);
+                        if (players.Count <= 1)
+                        {
+                            gameIsOver = true;
+                            break;
+                        }
                     }
                 }
             }
