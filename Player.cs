@@ -7,12 +7,25 @@ namespace monopoly
     class Player
     {
         static private int totalSpaces; // The number of spaces on the game board.
+        static private int playerCount = 0; // The number of players that have been created.
 
         private int id; // Must be between 1 - # of players in the game.
-        private bool isInGame; // If true, this player is still playing. If false, this player has lost. Cannot be set from false to true.
+        private bool isInGame; // If true, this player is still playing. If false, this player has lost.
         private int money;
         private int position; // Must be between 0 - (totalSpaces - 1).
         private int remainingJailTurns;
+
+        public Player()
+        {
+            isInGame = true;
+            playerCount++;
+            id = playerCount;
+        }
+
+        public static void SetTotalSpaces(int spaces)
+        {
+            totalSpaces = spaces;
+        }
 
         public int GetId()
         {
@@ -42,7 +55,8 @@ namespace monopoly
                 OnBankrupt();
         }
 
-        private void OnBankrupt() {
+        private void OnBankrupt()
+        {
             Console.WriteLine("You lost from going bankrupt! Better luck next time!");
             isInGame = false;
         }
