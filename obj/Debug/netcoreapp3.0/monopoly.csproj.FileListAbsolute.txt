@@ -1,0 +1,14 @@
+C:\Users\tyi\source\repos\monopoly\obj\Debug\netcoreapp3.0\monopoly.csprojAssemblyReference.cache
+C:\Users\tyi\source\repos\monopoly\obj\Debug\netcoreapp3.0\monopoly.AssemblyInfoInputs.cache
+C:\Users\tyi\source\repos\monopoly\obj\Debug\netcoreapp3.0\monopoly.AssemblyInfo.cs
+C:\Users\tyi\source\repos\monopoly\bin\Debug\netcoreapp3.0\monopoly.exe
+C:\Users\tyi\source\repos\monopoly\bin\Debug\netcoreapp3.0\monopoly.deps.json
+C:\Users\tyi\source\repos\monopoly\bin\Debug\netcoreapp3.0\monopoly.runtimeconfig.json
+C:\Users\tyi\source\repos\monopoly\bin\Debug\netcoreapp3.0\monopoly.runtimeconfig.dev.json
+C:\Users\tyi\source\repos\monopoly\bin\Debug\netcoreapp3.0\monopoly.dll
+C:\Users\tyi\source\repos\monopoly\bin\Debug\netcoreapp3.0\monopoly.pdb
+C:\Users\tyi\source\repos\monopoly\bin\Debug\netcoreapp3.0\Newtonsoft.Json.dll
+C:\Users\tyi\source\repos\monopoly\obj\Debug\netcoreapp3.0\monopoly.csproj.CopyComplete
+C:\Users\tyi\source\repos\monopoly\obj\Debug\netcoreapp3.0\monopoly.dll
+C:\Users\tyi\source\repos\monopoly\obj\Debug\netcoreapp3.0\monopoly.pdb
+C:\Users\tyi\source\repos\monopoly\obj\Debug\netcoreapp3.0\monopoly.genruntimeconfig.cache

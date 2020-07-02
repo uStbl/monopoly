@@ -6,16 +6,36 @@ namespace monopoly
 {
     class Game
     {
+        public const int PassMoney = 200;
         private const int MaxDoubleRolls = 2;
 
         private Random rnd;
-        private List<BoardSpace> boardSpaces;
+        private int goPosition;
         private int jailPosition;
+        private List<BoardSpace> boardSpaces;
         private List<Player> players;
 
-        public Game(List<BoardSpace> boardSpaces, List<Player> players)
+        // boardSpaces must be a legal game board. startingMoney must not be negative.
+        public Game(List<BoardSpace> boardSpaces, List<Player> players, int startingMoney)
         {
-            // TODO assign args to fields, set jailPosition based on boardSpaces
+            this.boardSpaces = boardSpaces;
+            this.players = players;
+            goPosition = boardSpaces.FindIndex(space => space.GetType() == typeof(GoSpace));
+            jailPosition = boardSpaces.FindIndex(space => space.GetType() == typeof(Jail));
+            foreach (Player p in players)
+            {
+                p.AddMoney(startingMoney);
+                p.MoveTo(goPosition);
+                p.SetRemainingJailTurns(0);
+            }
+            
+
+            rnd = new Random();
+        }
+
+        public int GetJailPosition()
+        {
+            return jailPosition;
         }
 
         public void PlayGame()
@@ -78,10 +98,11 @@ namespace monopoly
                 rollValue2 = rnd.Next(1, 7);
                 rollsThisTurn++;
 
-                if (rollsThisTurn >= 3 && rollValue1 == rollValue2)
+                if (rollsThisTurn > MaxDoubleRolls && rollValue1 == rollValue2)
                 {
                     Console.WriteLine("You were sent to jail for rolling doubles 3 times.");
                     player.MoveTo(jailPosition);
+                    player.SetRemainingJailTurns(3);
                     break;
                 }
                 else
