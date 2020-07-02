@@ -11,6 +11,12 @@ namespace monopoly
         public override void OnPlayerLanding(Player player)
         {
             player.MoveTo(jailPosition);
+            player.SetRemainingJailTurns(3);
+        }
+
+        public void SetJailPosition(int jailPosition)
+        {
+            this.jailPosition = jailPosition;
         }
     }
 }
