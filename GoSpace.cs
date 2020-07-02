@@ -6,8 +6,6 @@ namespace monopoly
 {
     class GoSpace : BoardSpace
     {
-        public const int PassMoney = 200;
-
         public GoSpace() {
             name = "Go";
         }
@@ -19,7 +17,7 @@ namespace monopoly
 
         public void OnPlayerPassing(Player player)
         {
-            player.AddMoney(PassMoney);
+            player.AddMoney(Game.PassMoney);
         }
     }
 }
