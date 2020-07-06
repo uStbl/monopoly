@@ -47,9 +47,9 @@ namespace monopoly
 
                     if (input == ConsoleKey.Y)
                     {
+                        Console.WriteLine("Congratulations! You have bought {0}.", name);
                         owner = player;
                         player.AddMoney(-price);
-                        Console.WriteLine("Congratulations! You have bought {0}.", name);
                     }
                     else if (input == ConsoleKey.N)
                     {
@@ -65,8 +65,11 @@ namespace monopoly
 
         private void CollectRent(Player player)
         {
-            Console.WriteLine("This property is owned by player {0}!" + owner.GetId());
+            Console.WriteLine("This property is owned by player {0}!", owner.GetId());
             Console.WriteLine("You paid player {0} ${1}.", owner.GetId(), rent);
+            player.AddMoney(-rent);
+            owner.AddMoney(rent, false);
+            Console.WriteLine("Player {0} now has ${1}.", owner.GetId(), owner.GetMoney());
         }
     }
 }
