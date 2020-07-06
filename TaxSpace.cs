@@ -15,7 +15,7 @@ namespace monopoly
 
         public override void OnPlayerLanding(Player player)
         {
-            Console.WriteLine("You had to pay {0}.", player.GetMoney());
+            Console.WriteLine("You had to pay {0}.", taxAmount);
             player.AddMoney(-taxAmount);
         }
     }
