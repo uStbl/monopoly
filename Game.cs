@@ -22,19 +22,15 @@ namespace monopoly
             this.players = players;
             goPosition = boardSpaces.FindIndex(space => space.GetType() == typeof(GoSpace));
             jailPosition = boardSpaces.FindIndex(space => space.GetType() == typeof(Jail));
+            Player.SetTotalSpaces(boardSpaces.Count);
             foreach (Player p in players)
             {
-                p.AddMoney(startingMoney);
+                p.SetMoney(startingMoney);
                 p.MoveTo(goPosition);
                 p.SetRemainingJailTurns(0);
             }
 
             rnd = new Random();
-        }
-
-        public int GetJailPosition()
-        {
-            return jailPosition;
         }
 
         public void PlayGame()
@@ -50,6 +46,8 @@ namespace monopoly
                     else
                         NormalTurn(currentPlayer);
 
+                    Console.WriteLine("-------------------------------------------------");
+
                     if (currentPlayer.HasLost())
                     {
                         players.RemoveAt(currentPlayer.GetId() - 1);
@@ -61,6 +59,8 @@ namespace monopoly
                     }
                 }
             }
+
+            Console.WriteLine("Player {0} has won the game! Congratulations!", players[0].GetId());
         }
 
         private void PromptForEnter()
@@ -85,7 +85,7 @@ namespace monopoly
                 player.Move(rollValue1 + rollValue2);
                 BoardSpace landedSpace = boardSpaces[player.GetPosition()];
                 Console.WriteLine("You rolled {0} and {1} and broke out of jail!", rollValue1, rollValue2);
-                Console.WriteLine("You moved {0} spaces forward and landed on {1}", rollValue1 + rollValue2, landedSpace.GetName());
+                Console.WriteLine("You moved {0} spaces forward and landed on {1}.", rollValue1 + rollValue2, landedSpace.GetName());
                 landedSpace.OnPlayerLanding(player);
             }
             else
@@ -120,11 +120,30 @@ namespace monopoly
                 }
                 else
                 {
-                    player.Move(rollValue1 + rollValue2);
+                    int distanceToGo; // distance to the go space
+                    if (player.GetPosition() < goPosition)
+                    {
+                        distanceToGo = goPosition - player.GetPosition();
+                    }
+                    else
+                    {
+                        distanceToGo = goPosition + (boardSpaces.Count - player.GetPosition());
+                    }
+
+                    int rollSum = rollValue1 + rollValue2;
+                    player.Move(rollSum);
                     BoardSpace landedSpace = boardSpaces[player.GetPosition()];
-                    Console.WriteLine("You moved {0} spaces forward and landed on {1}", rollValue1 + rollValue2, landedSpace.GetName());
+                    Console.WriteLine("You moved {0} spaces forward and landed on {1}.", rollSum, landedSpace.GetName());
+
+                    if (rollSum >= distanceToGo) {
+                        Console.WriteLine("You gained ${0} for passing go!", PassMoney);
+                        player.AddMoney(PassMoney);
+                    }
+
                     landedSpace.OnPlayerLanding(player);
-                    // TODO break if player loses, do not let them take another turn
+
+                    if (player.HasLost()) break;
+
                     if (rollValue1 == rollValue2)
                         Console.WriteLine("Due to rolling doubles, you get to take another turn!");
                 }
