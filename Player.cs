@@ -47,10 +47,11 @@ namespace monopoly
             return money;
         }
 
-        public void AddMoney(int money)
+        public void AddMoney(int money, bool log = true)
         {
             this.money += money;
-            Console.WriteLine("You now have {0}.", this.money);
+            if (log)
+                Console.WriteLine("You now have {0}.", this.money);
             if (this.money < 0)
                 OnBankrupt();
         }
