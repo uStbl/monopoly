@@ -8,7 +8,7 @@ namespace monopoly
     {
         private int rentMultiplier;
 
-        public Utility(string name, int price, int rentMultiplier) : base(name, price, 0)
+        public Utility(string name, int price, int rentMultiplier) : base(name, null, price, 0)
         {
             this.rentMultiplier = rentMultiplier;
         }
@@ -33,7 +33,9 @@ namespace monopoly
                     {
                         Console.WriteLine("Congratulations! You have bought {0}.", name);
                         owner = player;
+                        player.AddProperty(this);
                         player.AddMoney(-price);
+                        updateMultiplier();
                     }
                     else if (input == ConsoleKey.N)
                     {
@@ -44,6 +46,34 @@ namespace monopoly
             else
             {
                 Console.WriteLine("You do not have enough money to purchase this property. Too bad!");
+            }
+        }
+
+        private void updateMultiplier()
+        {
+            List<Utility> utilities = new List<Utility>();
+            foreach (Property p in owner.GetProperties())
+            {
+                if (p.GetType() == typeof(Utility))
+                    utilities.Add((Utility)p);
+            }
+
+            int newMultiplier = 0;
+
+            switch (utilities.Count)
+            {
+                case 1:
+                    newMultiplier = 4;
+                    break;
+
+                case 2:
+                    newMultiplier = 10;
+                    break;
+            }
+
+            foreach (Utility u in utilities)
+            {
+                u.rentMultiplier = newMultiplier;
             }
         }
     }
