@@ -6,9 +6,9 @@ namespace monopoly
 {
     class Property : BoardSpace
     {
-        private Player owner;
-        private int price;
-        private int rent;
+        protected Player owner;
+        protected int price;
+        protected int rent;
 
         public Property(string name, int price, int rent)
         {
@@ -18,29 +18,32 @@ namespace monopoly
         }
         public override void OnPlayerLanding(Player player)
         {
-
             if (owner == null)
             {
                 PromptToBuy(player);
             }
-            else
+            else if (owner != player)
             {
                 CollectRent(player);
             }
+            else
+            {
+                PassBy();
+            }
         }
 
-        private void PromptToBuy(Player player)
+        protected virtual void PromptToBuy(Player player)
         {
             int playerMoney = player.GetMoney();
             if (playerMoney >= price)
             {
                 Console.WriteLine("Would you like to purchase this property?");
-                ConsoleKey input;
                 Console.WriteLine("Your money: {0}", playerMoney);
                 Console.WriteLine("Cost of property: {0}", price);
                 Console.WriteLine("Rent amount: {0}", rent);
                 Console.WriteLine("Y/N");
 
+                ConsoleKey input;
                 do
                 {
                     input = Console.ReadKey(true).Key;
@@ -70,6 +73,11 @@ namespace monopoly
             player.AddMoney(-rent);
             owner.AddMoney(rent, false);
             Console.WriteLine("Player {0} now has ${1}.", owner.GetId(), owner.GetMoney());
+        }
+
+        private void PassBy()
+        {
+            Console.WriteLine("You own this property. You admire it as you pass by.");
         }
     }
 }
