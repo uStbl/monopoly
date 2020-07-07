@@ -65,7 +65,10 @@
     "rent": 10
   },
   {
-    "type": "free parking"
+    "type": "utility",
+    "name": "Electric Company",
+    "price": 150,
+    "multiplier": 4
   },
   {
     "type": "property",
@@ -159,7 +162,10 @@
     "rent": 22
   },
   {
-    "type": "free parking"
+    "type": "utility",
+    "name": "Water Works",
+    "price": 150,
+    "multiplier": 4
   },
   {
     "type": "property",
