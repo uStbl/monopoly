@@ -7,6 +7,9 @@ namespace monopoly
     class Game
     {
         public const int PassMoney = 200;
+        public const int LandingMoney = 400;
+        public const int JailTurns = 3;
+
         private const int MaxDoubleRolls = 2;
 
         private Random rnd;
@@ -22,10 +25,11 @@ namespace monopoly
             this.players = players;
             goPosition = boardSpaces.FindIndex(space => space.GetType() == typeof(GoSpace));
             jailPosition = boardSpaces.FindIndex(space => space.GetType() == typeof(Jail));
+            GoToJail.SetJailPosition(jailPosition);
             Player.SetTotalSpaces(boardSpaces.Count);
             foreach (Player p in players)
             {
-                p.SetMoney(startingMoney);
+                p.AddMoney(startingMoney, false);
                 p.MoveTo(goPosition);
                 p.SetRemainingJailTurns(0);
             }
@@ -135,7 +139,7 @@ namespace monopoly
                     BoardSpace landedSpace = boardSpaces[player.GetPosition()];
                     Console.WriteLine("You moved {0} spaces forward and landed on {1}.", rollSum, landedSpace.GetName());
 
-                    if (rollSum >= distanceToGo) {
+                    if (rollSum > distanceToGo) {
                         Console.WriteLine("You gained ${0} for passing go!", PassMoney);
                         player.AddMoney(PassMoney);
                     }
