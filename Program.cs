@@ -8,9 +8,10 @@ namespace monopoly
 {
     class Program
     {
+        private const string path = "../../../board.json";
         static void Main(string[] args)
         {
-            List<BoardSpace> boardSpaces = FromJson("board.json");
+            List<BoardSpace> boardSpaces = FromJson(path);
             Player player1 = new Player();
             Player player2 = new Player();
             List<Player> players = new List<Player>();
@@ -70,7 +71,13 @@ namespace monopoly
                             spaces.Add(new TaxSpace(jspace.name.Value, (int)jspace.GetValue("tax amount").Value));
                             break;
                         case "property":
-                            spaces.Add(new Property(jspace.name.Value, (int)jspace.price.Value, (int)jspace.rent.Value));
+                            spaces.Add(new Property(jspace.name.Value, jspace.color.Value, (int)jspace.price.Value, (int)jspace.rent.Value));
+                            break;
+                        case "railroad":
+                            spaces.Add(new Railroad(jspace.name.Value, (int)jspace.price.Value, (int)jspace.rent.Value));
+                            break;
+                        case "utility":
+                            spaces.Add(new Utility(jspace.name.Value, (int)jspace.price.Value, (int)jspace.multiplier.Value));
                             break;
                         default:
                             Console.WriteLine("you have a space type that you did not match");
@@ -78,10 +85,6 @@ namespace monopoly
                     }
                 }
             }
-
-            GoToJail goToJail = (GoToJail)spaces.Find(space => space.GetType() == typeof(GoToJail));
-            int jailPosition = spaces.FindIndex(space => space.GetType() == typeof(Jail));
-            goToJail.SetJailPosition(jailPosition);
 
             return spaces;
         }
