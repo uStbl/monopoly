@@ -4,6 +4,7 @@
   },
   {
     "type": "property",
+    "color": "brown",
     "name": "Mediterranean Avenue",
     "price": 60,
     "rent": 2
@@ -13,6 +14,7 @@
   },
   {
     "type": "property",
+    "color": "brown",
     "name": "Baltic Avenue",
     "price": 60,
     "rent": 4
@@ -23,10 +25,14 @@
     "tax amount": 200
   },
   {
-    "type": "free parking"
+    "type": "railroad",
+    "name": "Reading Railroad",
+    "price": 200,
+    "rent": 25
   },
   {
     "type": "property",
+    "color": "light blue",
     "name": "Oriental Avenue",
     "price": 100,
     "rent": 6
@@ -36,12 +42,14 @@
   },
   {
     "type": "property",
+    "color": "light blue",
     "name": "Vermont Avenue",
     "price": 100,
     "rent": 6
   },
   {
     "type": "property",
+    "color": "light blue",
     "name": "Connecticut Avenue",
     "price": 120,
     "rent": 8
@@ -51,6 +59,7 @@
   },
   {
     "type": "property",
+    "color": "purple",
     "name": "St. Charles Place",
     "price": 140,
     "rent": 10
@@ -60,21 +69,27 @@
   },
   {
     "type": "property",
+    "color": "purple",
     "name": "States Avenue",
     "price": 140,
     "rent": 10
   },
   {
     "type": "property",
+    "color": "purple",
     "name": "Virginia Avenue",
     "price": 160,
     "rent": 12
   },
   {
-    "type": "free parking"
+    "type": "railroad",
+    "name": "Pennsylvania Railroad",
+    "price": 200,
+    "rent": 25
   },
   {
     "type": "property",
+    "color": "orange",
     "name": "St. James Place",
     "price": 180,
     "rent": 14
@@ -84,12 +99,14 @@
   },
   {
     "type": "property",
+    "color": "orange",
     "name": "Tennessee Avenue",
     "price": 180,
     "rent": 14
   },
   {
     "type": "property",
+    "color": "orange",
     "name": "New York Avenue",
     "price": 200,
     "rent": 16
@@ -99,6 +116,7 @@
   },
   {
     "type": "property",
+    "color": "red",
     "name": "Kentucky Avenue",
     "price": 220,
     "rent": 18
@@ -108,27 +126,34 @@
   },
   {
     "type": "property",
+    "color": "red",
     "name": "Indiana Avenue",
     "price": 220,
     "rent": 18
   },
   {
     "type": "property",
+    "color": "red",
     "name": "Illinois Avenue",
     "price": 240,
     "rent": 20
   },
   {
-    "type": "free parking"
+    "type": "railroad",
+    "name": "B. & O. Railroad",
+    "price": 200,
+    "rent": 25
   },
   {
     "type": "property",
+    "color": "yellow",
     "name": "Atlantic Avenue",
     "price": 260,
     "rent": 22
   },
   {
     "type": "property",
+    "color": "yellow",
     "name": "Ventnor Avenue",
     "price": 260,
     "rent": 22
@@ -138,6 +163,7 @@
   },
   {
     "type": "property",
+    "color": "yellow",
     "name": "Marvin Gardens",
     "price": 280,
     "rent": 24
@@ -147,12 +173,14 @@
   },
   {
     "type": "property",
+    "color": "green",
     "name": "Pacific Avenue",
     "price": 300,
     "rent": 26
   },
   {
     "type": "property",
+    "color": "green",
     "name": "North Carolina Avenue",
     "price": 300,
     "rent": 26
@@ -162,18 +190,23 @@
   },
   {
     "type": "property",
+    "color": "green",
     "name": "Pennsylvania Avenue",
     "price": 320,
     "rent": 28
   },
   {
-    "type": "free parking"
+    "type": "railroad",
+    "name": "Short Line",
+    "price": 200,
+    "rent": 25
   },
   {
     "type": "free parking"
   },
   {
     "type": "property",
+    "color": "blue",
     "name": "Park Place",
     "price": 350,
     "rent": 35
@@ -185,6 +218,7 @@
   },
   {
     "type": "property",
+    "color": "blue",
     "name": "Boardwalk",
     "price": 400,
     "rent": 50
