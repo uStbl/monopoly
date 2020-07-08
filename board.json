@@ -7,7 +7,13 @@
     "color": "brown",
     "name": "Mediterranean Avenue",
     "price": 60,
-    "rent": 2
+    "rent": 2,
+    "house price": 50,
+    "1 house rent": 10,
+    "2 houses rent": 30,
+    "3 houses rent": 90,
+    "4 house rent": 160,
+    "hotel rent": 250
   },
   {
     "type": "free parking"
@@ -17,7 +23,13 @@
     "color": "brown",
     "name": "Baltic Avenue",
     "price": 60,
-    "rent": 4
+    "rent": 4,
+    "house price": 50,
+    "1 house rent": 20,
+    "2 houses rent": 60,
+    "3 houses rent": 180,
+    "4 house rent": 320,
+    "hotel rent": 450
   },
   {
     "type": "tax",
@@ -35,7 +47,13 @@
     "color": "light blue",
     "name": "Oriental Avenue",
     "price": 100,
-    "rent": 6
+    "rent": 6,
+    "house price": 50,
+    "1 house rent": 30,
+    "2 houses rent": 90,
+    "3 houses rent": 270,
+    "4 house rent": 400,
+    "hotel rent": 550
   },
   {
     "type": "free parking"
@@ -45,14 +63,26 @@
     "color": "light blue",
     "name": "Vermont Avenue",
     "price": 100,
-    "rent": 6
+    "rent": 6,
+    "house price": 50,
+    "1 house rent": 30,
+    "2 houses rent": 90,
+    "3 houses rent": 270,
+    "4 house rent": 400,
+    "hotel rent": 550
   },
   {
     "type": "property",
     "color": "light blue",
     "name": "Connecticut Avenue",
     "price": 120,
-    "rent": 8
+    "rent": 8,
+    "house price": 50,
+    "1 house rent": 40,
+    "2 houses rent": 100,
+    "3 houses rent": 300,
+    "4 house rent": 450,
+    "hotel rent": 600
   },
   {
     "type": "jail"
@@ -62,7 +92,13 @@
     "color": "purple",
     "name": "St. Charles Place",
     "price": 140,
-    "rent": 10
+    "rent": 10,
+    "house price": 100,
+    "1 house rent": 50,
+    "2 houses rent": 150,
+    "3 houses rent": 450,
+    "4 house rent": 625,
+    "hotel rent": 750
   },
   {
     "type": "utility",
@@ -75,14 +111,26 @@
     "color": "purple",
     "name": "States Avenue",
     "price": 140,
-    "rent": 10
+    "rent": 10,
+    "house price": 100,
+    "1 house rent": 50,
+    "2 houses rent": 150,
+    "3 houses rent": 450,
+    "4 house rent": 625,
+    "hotel rent": 750
   },
   {
     "type": "property",
     "color": "purple",
     "name": "Virginia Avenue",
     "price": 160,
-    "rent": 12
+    "rent": 12,
+    "house price": 100,
+    "1 house rent": 60,
+    "2 houses rent": 180,
+    "3 houses rent": 500,
+    "4 house rent": 700,
+    "hotel rent": 900
   },
   {
     "type": "railroad",
@@ -95,7 +143,13 @@
     "color": "orange",
     "name": "St. James Place",
     "price": 180,
-    "rent": 14
+    "rent": 14,
+    "house price": 100,
+    "1 house rent": 70,
+    "2 houses rent": 200,
+    "3 houses rent": 550,
+    "4 house rent": 750,
+    "hotel rent": 950
   },
   {
     "type": "free parking"
@@ -105,14 +159,26 @@
     "color": "orange",
     "name": "Tennessee Avenue",
     "price": 180,
-    "rent": 14
+    "rent": 14,
+    "house price": 100,
+    "1 house rent": 70,
+    "2 houses rent": 200,
+    "3 houses rent": 550,
+    "4 house rent": 750,
+    "hotel rent": 950
   },
   {
     "type": "property",
     "color": "orange",
     "name": "New York Avenue",
     "price": 200,
-    "rent": 16
+    "rent": 16,
+    "house price": 100,
+    "1 house rent": 80,
+    "2 houses rent": 220,
+    "3 houses rent": 600,
+    "4 house rent": 800,
+    "hotel rent": 1000
   },
   {
     "type": "free parking"
@@ -122,7 +188,13 @@
     "color": "red",
     "name": "Kentucky Avenue",
     "price": 220,
-    "rent": 18
+    "rent": 18,
+    "house price": 150,
+    "1 house rent": 90,
+    "2 houses rent": 250,
+    "3 houses rent": 700,
+    "4 house rent": 875,
+    "hotel rent": 1050
   },
   {
     "type": "free parking"
@@ -132,14 +204,26 @@
     "color": "red",
     "name": "Indiana Avenue",
     "price": 220,
-    "rent": 18
+    "rent": 18,
+    "house price": 150,
+    "1 house rent": 90,
+    "2 houses rent": 250,
+    "3 houses rent": 700,
+    "4 house rent": 875,
+    "hotel rent": 1050
   },
   {
     "type": "property",
     "color": "red",
     "name": "Illinois Avenue",
     "price": 240,
-    "rent": 20
+    "rent": 20,
+    "house price": 150,
+    "1 house rent": 100,
+    "2 houses rent": 300,
+    "3 houses rent": 750,
+    "4 house rent": 925,
+    "hotel rent": 1100
   },
   {
     "type": "railroad",
@@ -152,14 +236,26 @@
     "color": "yellow",
     "name": "Atlantic Avenue",
     "price": 260,
-    "rent": 22
+    "rent": 22,
+    "house price": 150,
+    "1 house rent": 110,
+    "2 houses rent": 330,
+    "3 houses rent": 800,
+    "4 house rent": 975,
+    "hotel rent": 1150
   },
   {
     "type": "property",
     "color": "yellow",
     "name": "Ventnor Avenue",
     "price": 260,
-    "rent": 22
+    "rent": 22,
+    "house price": 150,
+    "1 house rent": 110,
+    "2 houses rent": 330,
+    "3 houses rent": 800,
+    "4 house rent": 975,
+    "hotel rent": 1150
   },
   {
     "type": "utility",
@@ -172,7 +268,13 @@
     "color": "yellow",
     "name": "Marvin Gardens",
     "price": 280,
-    "rent": 24
+    "rent": 24,
+    "house price": 150,
+    "1 house rent": 120,
+    "2 houses rent": 360,
+    "3 houses rent": 850,
+    "4 house rent": 1025,
+    "hotel rent": 1200
   },
   {
     "type": "go to jail"
@@ -182,14 +284,26 @@
     "color": "green",
     "name": "Pacific Avenue",
     "price": 300,
-    "rent": 26
+    "rent": 26,
+    "house price": 200,
+    "1 house rent": 130,
+    "2 houses rent": 390,
+    "3 houses rent": 900,
+    "4 house rent": 1100,
+    "hotel rent": 1275
   },
   {
     "type": "property",
     "color": "green",
     "name": "North Carolina Avenue",
     "price": 300,
-    "rent": 26
+    "rent": 26,
+    "house price": 200,
+    "1 house rent": 130,
+    "2 houses rent": 390,
+    "3 houses rent": 900,
+    "4 house rent": 1100,
+    "hotel rent": 1275
   },
   {
     "type": "free parking"
@@ -199,7 +313,13 @@
     "color": "green",
     "name": "Pennsylvania Avenue",
     "price": 320,
-    "rent": 28
+    "rent": 28,
+    "house price": 200,
+    "1 house rent": 150,
+    "2 houses rent": 450,
+    "3 houses rent": 1000,
+    "4 house rent": 1200,
+    "hotel rent": 1400
   },
   {
     "type": "railroad",
@@ -215,7 +335,13 @@
     "color": "blue",
     "name": "Park Place",
     "price": 350,
-    "rent": 35
+    "rent": 35,
+    "house price": 200,
+    "1 house rent": 175,
+    "2 houses rent": 500,
+    "3 houses rent": 1100,
+    "4 house rent": 1300,
+    "hotel rent": 1500
   },
   {
     "type": "tax",
@@ -227,6 +353,12 @@
     "color": "blue",
     "name": "Boardwalk",
     "price": 400,
-    "rent": 50
+    "rent": 50,
+    "house price": 200,
+    "1 house rent": 200,
+    "2 houses rent": 600,
+    "3 houses rent": 1400,
+    "4 house rent": 1700,
+    "hotel rent": 2000
   }
 ]
