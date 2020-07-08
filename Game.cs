@@ -7,7 +7,7 @@ namespace monopoly
     class Game
     {
         public const int PassMoney = 200;
-        public const int LandingMoney = 400;
+        public const int LandingMultiplier = 2;
         public const int JailTurns = 3;
 
         private const int MaxDoubleRolls = 2;
@@ -16,6 +16,7 @@ namespace monopoly
         private int goPosition;
         private int jailPosition;
         private List<BoardSpace> boardSpaces;
+        private Dictionary<string, int> colors;
         private List<Player> players;
 
         // boardSpaces must be a legal game board. startingMoney must not be negative.
@@ -23,18 +24,45 @@ namespace monopoly
         {
             this.boardSpaces = boardSpaces;
             this.players = players;
+            colors = PropertiesPerGroup(boardSpaces);
             goPosition = boardSpaces.FindIndex(space => space.GetType() == typeof(GoSpace));
             jailPosition = boardSpaces.FindIndex(space => space.GetType() == typeof(Jail));
             GoToJail.SetJailPosition(jailPosition);
             Player.SetTotalSpaces(boardSpaces.Count);
             foreach (Player p in players)
             {
-                p.AddMoney(startingMoney, false);
                 p.MoveTo(goPosition);
-                p.SetRemainingJailTurns(0);
             }
 
             rnd = new Random();
+        }
+
+        private Dictionary<string, int> PropertiesPerGroup(List<BoardSpace> spaces)
+        {
+            Dictionary<string, int> grouping = new Dictionary<string, int>();
+
+            foreach (BoardSpace space in spaces)
+            {
+                if (space.GetType() == typeof(Property))
+                {
+                    Property property = (Property)space;
+                    string color = property.GetColor();
+
+                    if (grouping.ContainsKey(color))
+                    {
+                        int incremented;
+                        grouping.Remove(color, out incremented);
+                        incremented++;
+                        grouping.Add(color, incremented);
+                    }
+                    else
+                    {
+                        grouping.Add(color, 1);
+                    }
+                }
+            }
+
+            return grouping;
         }
 
         public void PlayGame()
@@ -139,7 +167,8 @@ namespace monopoly
                     BoardSpace landedSpace = boardSpaces[player.GetPosition()];
                     Console.WriteLine("You moved {0} spaces forward and landed on {1}.", rollSum, landedSpace.GetName());
 
-                    if (rollSum > distanceToGo) {
+                    if (rollSum > distanceToGo)
+                    {
                         Console.WriteLine("You gained ${0} for passing go!", PassMoney);
                         player.AddMoney(PassMoney);
                     }

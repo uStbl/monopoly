@@ -11,15 +11,18 @@ namespace monopoly
 
         private int id; // Must be between 1 - # of players in the game.
         private bool isInGame; // If true, this player is still playing. If false, this player has lost.
+        private List<Property> properties;
         private int money;
         private int position; // Must be between 0 - (totalSpaces - 1).
         private int remainingJailTurns;
 
-        public Player()
+        public Player(int money)
         {
             isInGame = true;
             playerCount++;
             id = playerCount;
+            properties = new List<Property>();
+            this.money = money;
         }
 
         public static void SetTotalSpaces(int spaces)
@@ -40,6 +43,15 @@ namespace monopoly
         public void LoseGame()
         {
             isInGame = false;
+        }
+
+        public Property[] GetProperties()
+        {
+            return properties.ToArray();
+        }
+
+        public void AddProperty(Property p) {
+            properties.Add(p);
         }
 
         public int GetMoney()

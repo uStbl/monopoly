@@ -6,8 +6,7 @@ namespace monopoly
 {
     class GoToJail : BoardSpace
     {
-        private const int jailTurns = 3;
-        private int jailPosition;
+        private static int jailPosition;
 
         public GoToJail()
         {
@@ -17,14 +16,14 @@ namespace monopoly
         public override void OnPlayerLanding(Player player)
         {
             Console.WriteLine("You were sent to jail.");
-            Console.WriteLine("You must remain in jail for {0} more turns.", jailTurns);
+            Console.WriteLine("You must remain in jail for {0} more turns.", Game.JailTurns);
             player.MoveTo(jailPosition);
-            player.SetRemainingJailTurns(jailTurns);
+            player.SetRemainingJailTurns(Game.JailTurns);
         }
 
-        public void SetJailPosition(int jailPosition)
+        public static void SetJailPosition(int jailPosition)
         {
-            this.jailPosition = jailPosition;
+            GoToJail.jailPosition = jailPosition;
         }
     }
 }

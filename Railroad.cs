@@ -6,7 +6,7 @@ namespace monopoly
 {
     class Railroad : Property
     {
-        public Railroad(string name, int price, int rent) : base(name, price, rent)
+        public Railroad(string name, int price, int rent) : base(name, null, price, rent)
         {
         }
 
@@ -30,7 +30,7 @@ namespace monopoly
                     {
                         Console.WriteLine("Congratulations! You have bought {0}.", name);
                         owner = player;
-                        player.GetProperties().Add(this);
+                        player.AddProperty(this);
                         player.AddMoney(-price);
                         updateRent();
                     }
@@ -46,7 +46,7 @@ namespace monopoly
             }
         }
 
-        private void updateRent()
+        protected override void updateRent()
         {
             List<Railroad> railroads = new List<Railroad>();
             foreach (Property p in owner.GetProperties())

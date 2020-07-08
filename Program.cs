@@ -9,16 +9,32 @@ namespace monopoly
     class Program
     {
         private const string path = "../../../board.json";
+        public static Dictionary<string, int> propertyGrouping;
+
         static void Main(string[] args)
         {
             List<BoardSpace> boardSpaces = FromJson(path);
-            Player player1 = new Player();
-            Player player2 = new Player();
+            propertyGrouping = PropertiesPerGroup(boardSpaces);
             List<Player> players = new List<Player>();
-            players.Add(player1);
-            players.Add(player2);
 
             Console.WriteLine("Welcome to Monopoly!");
+            Console.WriteLine("Please enter the number of players: ");
+            int playerCount = -1;
+            while (playerCount < 2)
+            {
+                string input = Console.ReadLine().Trim();
+                try
+                {
+                    playerCount = Int32.Parse(input);
+                    if (playerCount < 2)
+                        throw new System.ArgumentOutOfRangeException();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("You have entered an invalid value. Please enter a number equal or greater than 2.");
+                }
+            }
+
             Console.WriteLine("Please enter the amount of money you would like to start with: ");
             int startingMoney = -1;
             while (startingMoney < 0)
@@ -34,6 +50,11 @@ namespace monopoly
                 {
                     Console.WriteLine("You have entered an invalid value. Please enter a non-negative number.");
                 }
+            }
+
+            for (int i = 0; i < playerCount; i++)
+            {
+                players.Add(new Player(startingMoney));
             }
 
             Game myGame = new Game(boardSpaces, players, startingMoney);
@@ -87,6 +108,34 @@ namespace monopoly
             }
 
             return spaces;
+        }
+
+        private static Dictionary<string, int> PropertiesPerGroup(List<BoardSpace> spaces)
+        {
+            Dictionary<string, int> grouping = new Dictionary<string, int>();
+
+            foreach (BoardSpace space in spaces)
+            {
+                if (space.GetType() == typeof(Property))
+                {
+                    Property property = (Property)space;
+                    string color = property.GetColor();
+
+                    if (grouping.ContainsKey(color))
+                    {
+                        int incremented;
+                        grouping.Remove(color, out incremented);
+                        incremented++;
+                        grouping.Add(color, incremented);
+                    }
+                    else
+                    {
+                        grouping.Add(color, 1);
+                    }
+                }
+            }
+
+            return grouping;
         }
     }
 }

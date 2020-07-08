@@ -12,7 +12,9 @@ namespace monopoly
 
         public override void OnPlayerLanding(Player player)
         {
-            return;
+            int total = Game.LandingMultiplier * Game.PassMoney;
+            Console.WriteLine("You gained {0} for landing directly on Go!", total);
+            player.AddMoney(total);
         }
 
         public void OnPlayerPassing(Player player)

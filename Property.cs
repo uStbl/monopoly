@@ -7,15 +7,22 @@ namespace monopoly
     class Property : BoardSpace
     {
         protected Player owner;
+        private string color;
         protected int price;
         protected int rent;
 
-        public Property(string name, int price, int rent)
+        public Property(string name, string color, int price, int rent)
         {
             this.name = name;
+            this.color = color;
             this.price = price;
             this.rent = rent;
         }
+
+        public string GetColor() {
+            return color;
+        }
+
         public override void OnPlayerLanding(Player player)
         {
             if (owner == null)
@@ -40,6 +47,7 @@ namespace monopoly
                 Console.WriteLine("Would you like to purchase this property?");
                 Console.WriteLine("Your money: {0}", playerMoney);
                 Console.WriteLine("Cost of property: {0}", price);
+                Console.WriteLine("Property group: {0}", color);
                 Console.WriteLine("Rent amount: {0}", rent);
                 Console.WriteLine("Y/N");
 
@@ -52,7 +60,9 @@ namespace monopoly
                     {
                         Console.WriteLine("Congratulations! You have bought {0}.", name);
                         owner = player;
+                        player.AddProperty(this);
                         player.AddMoney(-price);
+                        updateRent();
                     }
                     else if (input == ConsoleKey.N)
                     {
@@ -66,7 +76,7 @@ namespace monopoly
             }
         }
 
-        private void CollectRent(Player player)
+        protected void CollectRent(Player player)
         {
             Console.WriteLine("This property is owned by player {0}!", owner.GetId());
             Console.WriteLine("You paid player {0} ${1}.", owner.GetId(), rent);
@@ -75,9 +85,32 @@ namespace monopoly
             Console.WriteLine("Player {0} now has ${1}.", owner.GetId(), owner.GetMoney());
         }
 
-        private void PassBy()
+        protected void PassBy()
         {
             Console.WriteLine("You own this property. You admire it as you pass by.");
+        }
+
+        protected virtual void updateRent() {
+            List<Property> sameGroup = new List<Property>();
+            foreach (Property p in owner.GetProperties())
+            {
+                if (p.color.Equals(color))
+                    sameGroup.Add(p);
+            }
+
+            bool hasMonopoly = false;
+            int totalInGroup;
+            Program.propertyGrouping.TryGetValue(color, out totalInGroup);
+
+            if (sameGroup.Count == totalInGroup)
+                hasMonopoly = true;
+
+            if (hasMonopoly) {
+                foreach (Property p in sameGroup) {
+                    p.rent *= 2;
+                }
+                Console.WriteLine("You have a monopoly on {0} properties! Rents have been doubled.", color);
+            }
         }
     }
 }
