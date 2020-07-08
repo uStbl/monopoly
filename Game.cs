@@ -111,14 +111,19 @@ namespace monopoly
             PromptForEnter();
             int rollValue1 = rnd.Next(1, 7);
             int rollValue2 = rnd.Next(1, 7);
+            int rollSum = rollValue1 + rollValue2;
             if (rollValue1 == rollValue2)
             {
                 player.SetRemainingJailTurns(0);
                 player.Move(rollValue1 + rollValue2);
                 BoardSpace landedSpace = boardSpaces[player.GetPosition()];
                 Console.WriteLine("You rolled {0} and {1} and broke out of jail!", rollValue1, rollValue2);
-                Console.WriteLine("You moved {0} spaces forward and landed on {1}.", rollValue1 + rollValue2, landedSpace.GetName());
-                landedSpace.OnPlayerLanding(player);
+                Console.WriteLine("You moved {0} spaces forward and landed on {1}.", rollSum, landedSpace.GetName());
+
+                if (landedSpace.GetType() != typeof(Utility))
+                    landedSpace.OnPlayerLanding(player);
+                else
+                    ((Utility)landedSpace).OnPlayerLanding(player, rollSum);
             }
             else
             {
@@ -173,7 +178,10 @@ namespace monopoly
                         player.AddMoney(PassMoney);
                     }
 
-                    landedSpace.OnPlayerLanding(player);
+                    if (landedSpace.GetType() != typeof(Utility))
+                        landedSpace.OnPlayerLanding(player);
+                    else
+                        ((Utility)landedSpace).OnPlayerLanding(player, rollSum);
 
                     if (player.HasLost()) break;
 

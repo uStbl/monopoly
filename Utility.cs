@@ -13,6 +13,22 @@ namespace monopoly
             this.rentMultiplier = rentMultiplier;
         }
 
+        public void OnPlayerLanding(Player player, int diceRoll)
+        {
+            if (owner == null)
+            {
+                PromptToBuy(player);
+            }
+            else if (owner != player)
+            {
+                CollectRent(player, diceRoll);
+            }
+            else
+            {
+                PassBy();
+            }
+        }
+
         protected override void PromptToBuy(Player player)
         {
             int playerMoney = player.GetMoney();
@@ -35,7 +51,7 @@ namespace monopoly
                         owner = player;
                         player.AddProperty(this);
                         player.AddMoney(-price);
-                        updateMultiplier();
+                        updateRent();
                     }
                     else if (input == ConsoleKey.N)
                     {
@@ -49,7 +65,16 @@ namespace monopoly
             }
         }
 
-        private void updateMultiplier()
+        private void CollectRent(Player player, int diceRoll) {
+            int rent = diceRoll * rentMultiplier;
+            Console.WriteLine("This property is owned by player {0}!", owner.GetId());
+            Console.WriteLine("You paid player {0} ${1} ({2} x {3}).", owner.GetId(), rent, diceRoll, rentMultiplier);
+            player.AddMoney(-rent);
+            owner.AddMoney(rent, false);
+            Console.WriteLine("Player {0} now has ${1}.", owner.GetId(), owner.GetMoney());
+        }
+
+        protected override void updateRent()
         {
             List<Utility> utilities = new List<Utility>();
             foreach (Property p in owner.GetProperties())
