@@ -8,7 +8,7 @@ namespace monopoly
     {
         private int rentMultiplier;
 
-        public Utility(string name, int price, int rentMultiplier) : base(name, null, price, 0)
+        public Utility(string name, int price, int rentMultiplier) : base(name, "", price, 0, 0, new int[0])
         {
             this.rentMultiplier = rentMultiplier;
         }

@@ -6,7 +6,7 @@ namespace monopoly
 {
     class Railroad : Property
     {
-        public Railroad(string name, int price, int rent) : base(name, null, price, rent)
+        public Railroad(string name, int price, int rent) : base(name, "", price, rent, 0, new int[0])
         {
         }
 
