@@ -6,20 +6,28 @@ namespace monopoly
 {
     class GoSpace : BoardSpace
     {
-        public GoSpace() {
-            name = "Go";
+        private int passMoney;
+
+        public GoSpace()
+        {
+            name = "GO";
+        }
+
+        public void SetPassMoney(int passMoney)
+        {
+            this.passMoney = passMoney;
         }
 
         public override void OnPlayerLanding(Player player)
         {
-            int total = Game.LandingMultiplier * Game.PassMoney;
+            int total = Game.LandingMultiplier * passMoney;
             Console.WriteLine("You gained {0} for landing directly on Go!", total);
             player.AddMoney(total);
         }
 
         public void OnPlayerPassing(Player player)
         {
-            player.AddMoney(Game.PassMoney);
+            player.AddMoney(passMoney);
         }
     }
 }

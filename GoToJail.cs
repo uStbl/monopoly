@@ -6,7 +6,7 @@ namespace monopoly
 {
     class GoToJail : BoardSpace
     {
-        private static int jailPosition;
+        private int jailPosition;
 
         public GoToJail()
         {
@@ -21,9 +21,9 @@ namespace monopoly
             player.SetRemainingJailTurns(Game.JailTurns);
         }
 
-        public static void SetJailPosition(int jailPosition)
+        public void SetJailPosition(int jailPosition)
         {
-            GoToJail.jailPosition = jailPosition;
+            this.jailPosition = jailPosition;
         }
     }
 }
