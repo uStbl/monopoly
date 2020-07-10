@@ -23,6 +23,7 @@ namespace monopoly
             id = playerCount;
             properties = new List<Property>();
             this.money = money;
+            remainingJailTurns = 0;
         }
 
         public static void SetTotalSpaces(int spaces)
@@ -50,7 +51,8 @@ namespace monopoly
             return properties.ToArray();
         }
 
-        public void AddProperty(Property p) {
+        public void AddProperty(Property p)
+        {
             properties.Add(p);
         }
 
@@ -103,6 +105,32 @@ namespace monopoly
         public void SetRemainingJailTurns(int turns)
         {
             remainingJailTurns = turns;
+        }
+
+        public List<Property> BuildableProperties()
+        {
+            List<Property> buildable = new List<Property>();
+
+            foreach (Property p in properties) {
+                int totalInGroup;
+                Program.propertyGrouping.TryGetValue(p.GetColor(), out totalInGroup);
+
+                if (AmountOfColor(p.GetColor()) >= totalInGroup)
+                    buildable.Add(p);
+            }
+
+            return buildable;
+        }
+
+        private int AmountOfColor(string color)
+        {
+            int count = 0;
+            foreach (Property p in properties) {
+                if (p.GetColor().Equals(color))
+                    count++;
+            }
+
+            return count;
         }
     }
 }

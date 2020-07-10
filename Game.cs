@@ -6,7 +6,6 @@ namespace monopoly
 {
     class Game
     {
-        public const int PassMoney = 200;
         public const int LandingMultiplier = 2;
         public const int JailTurns = 3;
 
@@ -15,19 +14,22 @@ namespace monopoly
         private Random rnd;
         private int goPosition;
         private int jailPosition;
+        private int passMoney;
         private List<BoardSpace> boardSpaces;
-        private Dictionary<string, int> colors;
         private List<Player> players;
 
-        // boardSpaces must be a legal game board. startingMoney must not be negative.
-        public Game(List<BoardSpace> boardSpaces, List<Player> players, int startingMoney)
+        // boardSpaces must be a legal game board. passMoney must not be negative.
+        public Game(List<BoardSpace> boardSpaces, List<Player> players, int passMoney)
         {
             this.boardSpaces = boardSpaces;
             this.players = players;
-            colors = PropertiesPerGroup(boardSpaces);
+            this.passMoney = passMoney;
             goPosition = boardSpaces.FindIndex(space => space.GetType() == typeof(GoSpace));
             jailPosition = boardSpaces.FindIndex(space => space.GetType() == typeof(Jail));
-            GoToJail.SetJailPosition(jailPosition);
+            GoToJail goToJail = (GoToJail)boardSpaces.Find(space => space.GetType() == typeof(GoToJail));
+            GoSpace goSpace = (GoSpace)boardSpaces.Find(space => space.GetType() == typeof(GoSpace));
+            goToJail.SetJailPosition(jailPosition);
+            goSpace.SetPassMoney(passMoney);
             Player.SetTotalSpaces(boardSpaces.Count);
             foreach (Player p in players)
             {
@@ -35,34 +37,6 @@ namespace monopoly
             }
 
             rnd = new Random();
-        }
-
-        private Dictionary<string, int> PropertiesPerGroup(List<BoardSpace> spaces)
-        {
-            Dictionary<string, int> grouping = new Dictionary<string, int>();
-
-            foreach (BoardSpace space in spaces)
-            {
-                if (space.GetType() == typeof(Property))
-                {
-                    Property property = (Property)space;
-                    string color = property.GetColor();
-
-                    if (grouping.ContainsKey(color))
-                    {
-                        int incremented;
-                        grouping.Remove(color, out incremented);
-                        incremented++;
-                        grouping.Add(color, incremented);
-                    }
-                    else
-                    {
-                        grouping.Add(color, 1);
-                    }
-                }
-            }
-
-            return grouping;
         }
 
         public void PlayGame()
@@ -73,6 +47,12 @@ namespace monopoly
                 foreach (Player currentPlayer in players)
                 {
                     Console.WriteLine("It is player {0}'s turn.", currentPlayer.GetId());
+
+                    List<Property> buildables = currentPlayer.BuildableProperties();
+
+                    if (buildables.Count > 0)
+                        BuySellHouses(buildables);
+
                     if (currentPlayer.GetRemainingJailTurns() > 0)
                         JailTurn(currentPlayer);
                     else
@@ -93,6 +73,136 @@ namespace monopoly
             }
 
             Console.WriteLine("Player {0} has won the game! Congratulations!", players[0].GetId());
+        }
+
+        private void BuySellHouses(List<Property> properties)
+        {
+            Console.WriteLine("Would you like to buy or sell houses or hotels?");
+            Console.WriteLine("Y/N");
+            ConsoleKey input;
+            do
+            {
+                input = Console.ReadKey(true).Key;
+            } while (!(input == ConsoleKey.Y || input == ConsoleKey.N));
+            while (input != ConsoleKey.N)
+            {
+                if (input == ConsoleKey.Y)
+                {
+                    Console.WriteLine("You may build on these properties:");
+
+                    Console.WriteLine("Enter the number of the property you would like to build on.");
+                    Console.Write("> ");
+                    int propertyNumber = -1;
+
+                    while (propertyNumber == -1)
+                    {
+                        try
+                        {
+                            propertyNumber = Convert.ToInt32(Console.ReadLine().Trim());
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine("You have entered an invalid value. Please enter the number of a property.");
+                        }
+
+                        if (propertyNumber < 1 || propertyNumber > properties.Count)
+                        {
+                            Console.WriteLine("You have entered an invalid value. Please enter the number of a property.");
+                            propertyNumber = -1;
+                        }
+                    }
+
+                    BuildOnProperty(properties[propertyNumber - 1]);
+
+                    Console.WriteLine("Would you like to buy or sell on any other properties?");
+                    Console.WriteLine("Y/N");
+                    do
+                    {
+                        input = Console.ReadKey(true).Key;
+                    } while (!(input == ConsoleKey.Y || input == ConsoleKey.N));
+
+                    if (input == ConsoleKey.N)
+                        Console.WriteLine("You declined to buy or sell houses or hotels.");
+                }
+                else if (input == ConsoleKey.N)
+                {
+                    Console.WriteLine("You declined to buy or sell houses or hotels.");
+                }
+            }
+        }
+
+        private void PrintProperties(List<Property> properties)
+        {
+            for (int i = 0; i < properties.Count; i++)
+            {
+                Property p = properties[i];
+                Console.WriteLine($"{i + 1}. {p.GetName()}");
+                Console.WriteLine($"Current rent: {p.GetRent()}");
+                Console.WriteLine($"Houses built: {(p.GetHouses() == 5 ? 0 : p.GetHouses())}");
+                Console.WriteLine($"Hotel built: {(p.GetHouses() == 5 ? "Yes" : "No")}");
+                Console.WriteLine();
+            }
+        }
+
+        private void BuildOnProperty(Property property)
+        {
+            Console.WriteLine($"You selected {property.GetName()}.");
+            Console.WriteLine("Would you like to buy or sell houses?");
+            Console.WriteLine("Press B to buy, S to sell, or C to cancel.");
+
+            ConsoleKey input;
+            do
+            {
+                input = Console.ReadKey(true).Key;
+            } while (!(input == ConsoleKey.B || input == ConsoleKey.S || input == ConsoleKey.C));
+
+            if (input == ConsoleKey.B)
+            {
+                Console.WriteLine("How many houses would you like to buy?");
+                int buyAmount = -1;
+                while (!(1 <= buyAmount && buyAmount <= 5))
+                {
+                    string inputLine = Console.ReadLine().Trim();
+                    try
+                    {
+                        buyAmount = Int32.Parse(inputLine);
+                        if (!(1 <= buyAmount && buyAmount <= 5))
+                            throw new System.ArgumentOutOfRangeException();
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("You have entered an invalid value. Please enter a number between 1 and 5.");
+                    }
+                }
+
+                property.tryBuy(buyAmount);
+            }
+            else if (input == ConsoleKey.S)
+            {
+                Console.WriteLine("How many houses would you like to sell?");
+
+                int sellAmount = -1;
+                while (!(1 <= sellAmount && sellAmount <= 5))
+                {
+                    string inputLine = Console.ReadLine().Trim();
+                    try
+                    {
+                        sellAmount = Int32.Parse(inputLine);
+                        if (!(1 <= sellAmount && sellAmount <= 5))
+                            throw new System.ArgumentOutOfRangeException();
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("You have entered an invalid value. Please enter a number between 1 and 5.");
+                    }
+                }
+
+                property.trySell(sellAmount);
+            }
+            else if (input == ConsoleKey.C)
+            {
+                Console.WriteLine("You decided not to buy or sell on this property.");
+            }
         }
 
         private void PromptForEnter()
@@ -174,8 +284,8 @@ namespace monopoly
 
                     if (rollSum > distanceToGo)
                     {
-                        Console.WriteLine("You gained ${0} for passing go!", PassMoney);
-                        player.AddMoney(PassMoney);
+                        Console.WriteLine("You gained ${0} for passing go!", passMoney);
+                        player.AddMoney(passMoney);
                     }
 
                     if (landedSpace.GetType() != typeof(Utility))

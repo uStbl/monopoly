@@ -18,7 +18,7 @@ namespace monopoly
             List<Player> players = new List<Player>();
 
             Console.WriteLine("Welcome to Monopoly!");
-            Console.WriteLine("Please enter the number of players: ");
+            Console.Write("Please enter the number of players: ");
             int playerCount = -1;
             while (playerCount < 2)
             {
@@ -35,7 +35,7 @@ namespace monopoly
                 }
             }
 
-            Console.WriteLine("Please enter the amount of money you would like to start with: ");
+            Console.Write("Please enter the amount of money you would like to start with: ");
             int startingMoney = -1;
             while (startingMoney < 0)
             {
@@ -52,12 +52,29 @@ namespace monopoly
                 }
             }
 
+            Console.Write("Please enter the amount of money to collect when passing GO: ");
+            int passMoney = -1;
+            while (passMoney < 0)
+            {
+                string input = Console.ReadLine().Trim();
+                try
+                {
+                    passMoney = Int32.Parse(input);
+                    if (passMoney < 0)
+                        throw new System.ArgumentOutOfRangeException();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("You have entered an invalid value. Please enter a non-negative number.");
+                }
+            }
+
             for (int i = 0; i < playerCount; i++)
             {
                 players.Add(new Player(startingMoney));
             }
 
-            Game myGame = new Game(boardSpaces, players, startingMoney);
+            Game myGame = new Game(boardSpaces, players, passMoney);
             Console.WriteLine("You have started the game!");
 
             myGame.PlayGame();
@@ -92,7 +109,8 @@ namespace monopoly
                             spaces.Add(new TaxSpace(jspace.name.Value, (int)jspace.GetValue("tax amount").Value));
                             break;
                         case "property":
-                            spaces.Add(new Property(jspace.name.Value, jspace.color.Value, (int)jspace.price.Value, (int)jspace.rent.Value));
+                            spaces.Add(new Property(jspace.name.Value, jspace.color.Value, (int)jspace.price.Value,
+                                (int)jspace.rent.Value, (int)jspace.GetValue("house price").Value, jspace.GetValue("house rents").ToObject(typeof(int[]))));
                             break;
                         case "railroad":
                             spaces.Add(new Railroad(jspace.name.Value, (int)jspace.price.Value, (int)jspace.rent.Value));
