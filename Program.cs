@@ -74,7 +74,7 @@ namespace monopoly
                 players.Add(new Player(startingMoney));
             }
 
-            Game myGame = new Game(boardSpaces, players, passMoney);
+            DevGame myGame = new DevGame(boardSpaces, players, passMoney);
             Console.WriteLine("You have started the game!");
 
             myGame.PlayGame();
@@ -117,6 +117,12 @@ namespace monopoly
                             break;
                         case "utility":
                             spaces.Add(new Utility(jspace.name.Value, (int)jspace.price.Value, (int)jspace.multiplier.Value));
+                            break;
+                        case "community chest":
+                            spaces.Add(new ChestChance(false));
+                            break;
+                        case "chance":
+                            spaces.Add(new ChestChance(true));
                             break;
                         default:
                             Console.WriteLine("you have a space type that you did not match");

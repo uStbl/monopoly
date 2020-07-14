@@ -156,7 +156,7 @@ namespace monopoly
                 Console.WriteLine("You do not have that many houses on this property.");
             else
             {
-                houses += amount;
+                houses -= amount;
                 if (houses > 0)
                     rent = houseRents[houses - 1];
                 else

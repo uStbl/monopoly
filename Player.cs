@@ -12,6 +12,7 @@ namespace monopoly
         private int id; // Must be between 1 - # of players in the game.
         private bool isInGame; // If true, this player is still playing. If false, this player has lost.
         private List<Property> properties;
+        private List<Card> cards;
         private int money;
         private int position; // Must be between 0 - (totalSpaces - 1).
         private int remainingJailTurns;
@@ -56,6 +57,11 @@ namespace monopoly
             properties.Add(p);
         }
 
+        public void AddCard(Card c)
+        {
+            cards.Add(c);
+        }
+
         public int GetMoney()
         {
             return money;
@@ -72,7 +78,7 @@ namespace monopoly
 
         private void OnBankrupt()
         {
-            Console.WriteLine("You lost from going bankrupt! Better luck next time!");
+            Console.WriteLine("Player {0} lost from going bankrupt! Better luck next time!", id);
             isInGame = false;
         }
 
@@ -111,7 +117,8 @@ namespace monopoly
         {
             List<Property> buildable = new List<Property>();
 
-            foreach (Property p in properties) {
+            foreach (Property p in properties)
+            {
                 int totalInGroup;
                 Program.propertyGrouping.TryGetValue(p.GetColor(), out totalInGroup);
 
@@ -125,7 +132,8 @@ namespace monopoly
         private int AmountOfColor(string color)
         {
             int count = 0;
-            foreach (Property p in properties) {
+            foreach (Property p in properties)
+            {
                 if (p.GetColor().Equals(color))
                     count++;
             }

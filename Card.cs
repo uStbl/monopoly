@@ -9,12 +9,19 @@ namespace monopoly
         private string name;
         private bool holdable;
         private Action<Player> effect;
+        private Random rnd;
 
         public Card(string name, bool holdable, Action<Player> effect)
         {
             this.name = name;
             this.holdable = holdable;
             this.effect = effect;
+            rnd = new Random();
+        }
+
+        public bool GetHoldable()
+        {
+            return holdable;
         }
 
         public int CompareTo(object obj)
@@ -22,11 +29,12 @@ namespace monopoly
             if (obj == null)
                 return 1;
             else
-                return new Random().Next(-1, 2);
+                return rnd.Next(-1, 2);
         }
 
         public void DoEffect(Player player)
         {
+            Console.WriteLine("You picked the card: {0}", name);
             effect(player);
         }
     }

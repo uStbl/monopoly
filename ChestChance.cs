@@ -4,23 +4,30 @@ using System.Text;
 
 namespace monopoly
 {
-    class CommunityChest : BoardSpace
+    class ChestChance : BoardSpace
     {
-        private int goPosition;
-        private int jailPosition;
-        private Player[] players;
-        private Card[] cards;
-        private int deckIncrement;
+        private static int goPosition;
+        private static int jailPosition;
+        private static Player[] players;
+        private static List<Card> chestCards;
+        private static List<Card> chanceCards;
+        private static int deckIncrement;
 
-        public CommunityChest()
+        public ChestChance(bool isChance)
         {
-            cards = new Card[]
+            if (isChance)
+                name = "Chance";
+            else
+                name = "Community Chest";
+
+            deckIncrement = 0;
+            chestCards = new List<Card>
             {
                 new Card("Advance to GO", false, player => {player.MoveTo(goPosition);}),
                 new Card("Bank error in your favor - Collect $200", false, player => {player.AddMoney(200);}),
                 new Card("Doctor's fees - Pay $50", false, player => {player.AddMoney(-50);}),
                 new Card("From sale of stock you get $50", false, player => {player.AddMoney(50);}),
-                new Card("Get out of jail free", true, player => {}),
+                new Card("Get out of jail free", true, player => {player.SetRemainingJailTurns(0);}),
                 new Card("Go to jail", false, player => {player.MoveTo(jailPosition);}),
                 new Card("Grand opera night - Collect $50 from every player for opening night seats", false,
                 player =>
@@ -52,32 +59,44 @@ namespace monopoly
                 new Card("You inherit $100", false, player => {player.AddMoney(100);}),
             };
 
-            deckIncrement = 0;
-            Array.Sort(cards);
+            chestCards.Sort();
         }
 
-        public void setGoPosition(int goPosition)
+        public static void SetGoPosition(int goPosition)
         {
-            this.goPosition = goPosition;
+            ChestChance.goPosition = goPosition;
         }
 
-        public void setJailPosition(int jailPosition)
+        public static void SetJailPosition(int jailPosition)
         {
-            this.jailPosition = jailPosition;
+            ChestChance.jailPosition = jailPosition;
         }
 
-        public void setPlayers(Player[] players)
+        public static void SetPlayers(Player[] players)
         {
-            this.players = players;
+            ChestChance.players = players;
         }
 
         public override void OnPlayerLanding(Player player)
         {
-            cards[deckIncrement].DoEffect(player);
-            if (deckIncrement < cards.Length - 1)
-                deckIncrement++;
+            List<Card> deck = name == "Chance" ? chanceCards : chestCards;
+
+            Card currentCard = deck[deckIncrement];
+            if (currentCard.GetHoldable())
+            {
+                player.AddCard(currentCard);
+                deck.Remove(currentCard);
+                if (deckIncrement >= chestCards.Count)
+                    deckIncrement = 0;
+            }
             else
-                deckIncrement = 0;
+            {
+                currentCard.DoEffect(player);
+                if (deckIncrement < chestCards.Count - 1)
+                    deckIncrement++;
+                else
+                    deckIncrement = 0;
+            }
         }
     }
 }

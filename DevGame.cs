@@ -27,15 +27,20 @@ namespace monopoly
             this.passMoney = passMoney;
             goPosition = boardSpaces.FindIndex(space => space.GetType() == typeof(GoSpace));
             jailPosition = boardSpaces.FindIndex(space => space.GetType() == typeof(Jail));
+
             GoToJail goToJail = (GoToJail)boardSpaces.Find(space => space.GetType() == typeof(GoToJail));
             GoSpace goSpace = (GoSpace)boardSpaces.Find(space => space.GetType() == typeof(GoSpace));
             goToJail.SetJailPosition(jailPosition);
             goSpace.SetPassMoney(passMoney);
+
+            ChestChance.SetGoPosition(goPosition);
+            ChestChance.SetJailPosition(jailPosition);
+            ChestChance.SetPlayers(players.ToArray());
+
+
             Player.SetTotalSpaces(boardSpaces.Count);
             foreach (Player p in players)
-            {
                 p.MoveTo(goPosition);
-            }
 
             rnd = new Random();
         }
@@ -279,4 +284,4 @@ namespace monopoly
 
     }
 }
-}
+
