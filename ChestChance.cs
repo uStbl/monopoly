@@ -6,24 +6,28 @@ namespace monopoly
 {
     class ChestChance : BoardSpace
     {
-        private static int goPosition;
-        private static int jailPosition;
+        private bool isChest;
         private static Player[] players;
         private static List<Card> chestCards;
         private static List<Card> chanceCards;
-        private static int deckIncrement;
+        private static int chestDeckPosition;
+        private static int chanceDeckPosition;
 
-        public ChestChance(bool isChance)
+        public ChestChance(bool isChest)
         {
-            if (isChance)
-                name = "Chance";
-            else
+            if (isChest)
                 name = "Community Chest";
+            else
+                name = "Chance";
 
-            deckIncrement = 0;
+            this.isChest = isChest;
+        }
+
+        public static void InitializeDecks()
+        {
             chestCards = new List<Card>
             {
-                new Card("Advance to GO", false, player => {player.MoveTo(goPosition);}),
+                new Card("Advance to GO", false, player => {player.MoveTo(containingGame.FindPosition("GO"));}),
                 new Card("Bank error in your favor - Collect $200", false, player => {player.AddMoney(200);}),
                 new Card("Doctor's fees - Pay $50", false, player => {player.AddMoney(-50);}),
                 new Card("From sale of stock you get $50", false, player => {player.AddMoney(50);}),
@@ -59,7 +63,39 @@ namespace monopoly
                 new Card("You inherit $100", false, player => {player.AddMoney(100);}),
             };
 
+            chanceCards = new List<Card>
+            {
+                new Card("Advance to GO", false, player => {player.MoveTo(goPosition);}),
+                new Card("Advance to Illinois Ave. - If you pass GO, collect $200", false, player => {player.MoveTo();}),
+                new Card("Advance to St. Charles Place - If you pass GO, collect $200", false, player => {player.MoveTo();}),
+                new Card("Advance token to nearest utility", false, player => {player.MoveTo();}),
+                new Card("Advance token to the nearest railroad and pay owner double rent", false, player => {player.MoveTo();}),
+                new Card("Bank pays you dividend of $50", false, player => {player.AddMoney(50);}),
+                new Card("Get out of jail free", true, player => {player.MoveTo();}),
+                new Card("Go back 3 spaces", false, player => {player.Move(-3);}),
+                new Card("Go to jail", false, player => {player.MoveTo(jailPosition);}),
+                new Card("Make general repairs on all your property - $25 per house - $100 per hotel", false, player => {player.MoveTo();}),
+                new Card("Pay poor tax of $15", false, player => {player.AddMoney(-15);}),
+                new Card("Take a walk on the Boardwalk – Advance token to Boardwalk", false, player => {player.MoveTo();}),
+                new Card("Take a trip to Reading Railroad – If you pass GO, collect $200", false, player => {player.MoveTo();}),
+                new Card("You have been elected Chairman of the Board – Pay each player $50", false,
+                player =>
+                {
+                    foreach(Player p in players) p.AddMoney(50, false);
+                    player.AddMoney(players.Length * -50);
+                }),
+                new Card("Your building and loan matures – Collect $150", false, player => {player.AddMoney(150);}),
+                new Card("You have won a crossword competition - Collect $100", false, player => {player.AddMoney(100);}),
+            };
+
             chestCards.Sort();
+            chanceCards.Sort();
+            chestDeckPosition = 0;
+            chanceDeckPosition = 0;
+        }
+
+        public static void InitializeFields(Player[] players, int goPosition, int jailPosition, ) { 
+        
         }
 
         public static void SetGoPosition(int goPosition)
@@ -79,23 +115,43 @@ namespace monopoly
 
         public override void OnPlayerLanding(Player player)
         {
-            List<Card> deck = name == "Chance" ? chanceCards : chestCards;
-
-            Card currentCard = deck[deckIncrement];
-            if (currentCard.GetHoldable())
+            if (isChance)
             {
-                player.AddCard(currentCard);
-                deck.Remove(currentCard);
-                if (deckIncrement >= chestCards.Count)
-                    deckIncrement = 0;
+                Card currentCard = chanceCards[chanceDeckPosition];
+                if (currentCard.GetHoldable())
+                {
+                    player.AddCard(currentCard);
+                    chanceCards.Remove(currentCard);
+                    if (chanceDeckPosition >= chanceCards.Count)
+                        chanceDeckPosition = 0;
+                }
+                else
+                {
+                    currentCard.DoEffect(player);
+                    if (chanceDeckPosition < chanceCards.Count - 1)
+                        chanceDeckPosition++;
+                    else
+                        chanceDeckPosition = 0;
+                }
             }
             else
             {
-                currentCard.DoEffect(player);
-                if (deckIncrement < chestCards.Count - 1)
-                    deckIncrement++;
+                Card currentCard = chestCards[chestDeckPosition];
+                if (currentCard.GetHoldable())
+                {
+                    player.AddCard(currentCard);
+                    chestCards.Remove(currentCard);
+                    if (chestDeckPosition >= chestCards.Count)
+                        chestDeckPosition = 0;
+                }
                 else
-                    deckIncrement = 0;
+                {
+                    currentCard.DoEffect(player);
+                    if (chestDeckPosition < chestCards.Count - 1)
+                        chestDeckPosition++;
+                    else
+                        chestDeckPosition = 0;
+                }
             }
         }
     }

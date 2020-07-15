@@ -27,20 +27,33 @@ namespace monopoly
             goPosition = boardSpaces.FindIndex(space => space.GetType() == typeof(GoSpace));
             jailPosition = boardSpaces.FindIndex(space => space.GetType() == typeof(Jail));
 
-            GoToJail goToJail = (GoToJail)boardSpaces.Find(space => space.GetType() == typeof(GoToJail));
-            GoSpace goSpace = (GoSpace)boardSpaces.Find(space => space.GetType() == typeof(GoSpace));
-            goToJail.SetJailPosition(jailPosition);
-            goSpace.SetPassMoney(passMoney);
+            foreach (BoardSpace b in boardSpaces)
+                b.SetGame(this);
 
-            ChestChance.SetGoPosition(goPosition);
-            ChestChance.SetJailPosition(jailPosition);
-            ChestChance.SetPlayers(players.ToArray());
-
-            Player.SetTotalSpaces(boardSpaces.Count);
             foreach (Player p in players)
                 p.MoveTo(goPosition);
 
             rnd = new Random();
+        }
+
+        public int FindPosition(string name)
+        {
+            return boardSpaces.FindIndex(space => space.GetName() == name);
+        }
+
+        public int GetPassMoney()
+        {
+            return passMoney;
+        }
+
+        public Player[] GetPlayers()
+        {
+            return players.ToArray();
+        }
+
+        public int GetTotalSpaces()
+        {
+            return boardSpaces.Count;
         }
 
         public void PlayGame()
@@ -60,7 +73,7 @@ namespace monopoly
                     if (currentPlayer.GetRemainingJailTurns() > 0)
                         JailTurn(currentPlayer);
                     else
-                        NormalTurn(currentPlayer);
+                        DevTurn(currentPlayer);
 
                     Console.WriteLine("-------------------------------------------------");
 
@@ -303,6 +316,38 @@ namespace monopoly
                         Console.WriteLine("Due to rolling doubles, you get to take another turn!");
                 }
             } while (rollValue1 == rollValue2);
+        }
+
+        // Move [player] by a chosen number of spaces. For development purposes.
+        private void DevTurn(Player player)
+        {
+            int distanceToGo; // distance to the go space
+            if (player.GetPosition() < goPosition)
+            {
+                distanceToGo = goPosition - player.GetPosition();
+            }
+            else
+            {
+                distanceToGo = goPosition + (boardSpaces.Count - player.GetPosition());
+            }
+
+            Console.WriteLine("How many spaces do you want to move?");
+            int input = Convert.ToInt32(Console.ReadLine());
+
+            player.Move(input);
+            BoardSpace landedSpace = boardSpaces[player.GetPosition()];
+            Console.WriteLine("You moved {0} spaces forward and landed on {1}.", input, landedSpace.GetName());
+
+            if (input > distanceToGo)
+            {
+                Console.WriteLine("You gained ${0} for passing go!", passMoney);
+                player.AddMoney(passMoney);
+            }
+
+            if (landedSpace.GetType() != typeof(Utility))
+                landedSpace.OnPlayerLanding(player);
+            else
+                ((Utility)landedSpace).OnPlayerLanding(player, input);
         }
     }
 }

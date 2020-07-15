@@ -74,7 +74,7 @@ namespace monopoly
                 players.Add(new Player(startingMoney));
             }
 
-            DevGame myGame = new DevGame(boardSpaces, players, passMoney);
+            Game myGame = new Game(boardSpaces, players, passMoney);
             Console.WriteLine("You have started the game!");
 
             myGame.PlayGame();

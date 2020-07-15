@@ -6,9 +6,9 @@ namespace monopoly
 {
     class Player
     {
-        static private int totalSpaces; // The number of spaces on the game board.
         static private int playerCount = 0; // The number of players that have been created.
 
+        private Game containingGame; // The game that this player is in.
         private int id; // Must be between 1 - # of players in the game.
         private bool isInGame; // If true, this player is still playing. If false, this player has lost.
         private List<Property> properties;
@@ -27,9 +27,9 @@ namespace monopoly
             remainingJailTurns = 0;
         }
 
-        public static void SetTotalSpaces(int spaces)
+        public void SetGame(Game game)
         {
-            totalSpaces = spaces;
+            containingGame = game;
         }
 
         public int GetId()
@@ -90,12 +90,15 @@ namespace monopoly
         public void Move(int spaces)
         {
             position += spaces;
-            position %= totalSpaces;
+            position %= containingGame.GetTotalSpaces();
+
+            while (position < 0)
+                position += containingGame.GetTotalSpaces();
         }
 
         public void MoveTo(int destination)
         {
-            if (destination < 0 || destination >= totalSpaces)
+            if (destination < 0 || destination >= containingGame.GetTotalSpaces())
             {
                 throw new System.ArgumentOutOfRangeException("destination", "The destination must be between 0 and the number of board spaces - 1.");
             }
