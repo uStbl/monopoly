@@ -44,7 +44,7 @@
     "house rents": [ 30, 90, 270, 400, 550 ]
   },
   {
-    "type": "free parking"
+    "type": "chance"
   },
   {
     "type": "property",
@@ -116,7 +116,7 @@
     "house rents": [ 70, 200, 550, 750, 950 ]
   },
   {
-    "type": "free parking"
+    "type": "community chest"
   },
   {
     "type": "property",
@@ -149,7 +149,7 @@
     "house rents": [ 90, 250, 700, 875, 1050 ]
   },
   {
-    "type": "free parking"
+    "type": "chance"
   },
   {
     "type": "property",
@@ -230,7 +230,7 @@
     "house rents": [ 130, 390, 900, 1100, 1275 ]
   },
   {
-    "type": "free parking"
+    "type": "community chest"
   },
   {
     "type": "property",
@@ -248,7 +248,7 @@
     "rent": 25
   },
   {
-    "type": "free parking"
+    "type": "chance"
   },
   {
     "type": "property",

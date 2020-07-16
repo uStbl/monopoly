@@ -19,7 +19,7 @@ namespace monopoly
             rnd = new Random();
         }
 
-        public bool GetHoldable()
+        public bool IsHoldable()
         {
             return holdable;
         }

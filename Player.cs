@@ -89,21 +89,54 @@ namespace monopoly
 
         public void Move(int spaces)
         {
+            CalculatePassMoney(spaces);
+
             position += spaces;
             position %= containingGame.GetTotalSpaces();
 
             while (position < 0)
                 position += containingGame.GetTotalSpaces();
+
+            Console.WriteLine("You moved {0} spaces forward and landed on {1}.", spaces, containingGame.BoardSpaceAt(position).GetName());
         }
 
-        public void MoveTo(int destination)
+        public void MoveTo(int destination, bool collectPassMoney = true)
         {
+            int spaces = DistanceTo(destination);
+
+            if (collectPassMoney)
+                CalculatePassMoney(spaces);
+
             if (destination < 0 || destination >= containingGame.GetTotalSpaces())
             {
                 throw new System.ArgumentOutOfRangeException("destination", "The destination must be between 0 and the number of board spaces - 1.");
             }
             else
                 position = destination;
+
+            Console.WriteLine("You moved {0} spaces forward and landed on {1}.", spaces, containingGame.BoardSpaceAt(position).GetName());
+        }
+
+        // Add money if moving [spaces] will move the player past GO.
+        private void CalculatePassMoney(int spaces)
+        {
+            int distanceToGo; // distance to the go space
+            int goPosition = containingGame.FindPosition("GO");
+            distanceToGo = DistanceTo(goPosition);
+
+            if (spaces > distanceToGo)
+            {
+                Console.WriteLine("You gained ${0} for passing go!", containingGame.GetPassMoney());
+                money += containingGame.GetPassMoney();
+            }
+        }
+
+        public int DistanceTo(int destination)
+        {
+            if (destination > position)
+                return destination - position;
+            else
+                return destination + (containingGame.GetTotalSpaces() - position);
         }
 
         public int GetRemainingJailTurns()

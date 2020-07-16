@@ -119,10 +119,10 @@ namespace monopoly
                             spaces.Add(new Utility(jspace.name.Value, (int)jspace.price.Value, (int)jspace.multiplier.Value));
                             break;
                         case "community chest":
-                            spaces.Add(new ChestChance(false));
+                            spaces.Add(new CommunityChest(false));
                             break;
                         case "chance":
-                            spaces.Add(new ChestChance(true));
+                            spaces.Add(new CommunityChest(true));
                             break;
                         default:
                             Console.WriteLine("you have a space type that you did not match");

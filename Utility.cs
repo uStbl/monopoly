@@ -13,6 +13,29 @@ namespace monopoly
             this.rentMultiplier = rentMultiplier;
         }
 
+        public override void OnPlayerLanding(Player player)
+        {
+            if (owner == null)
+            {
+                PromptToBuy(player);
+            }
+            else if (owner != player)
+            {
+                Console.WriteLine("This property is owned by player {0}!", owner.GetId());
+                Console.WriteLine("Roll dice to determine the rent you owe. Rent will be ten times the amount thrown.");
+                containingGame.PromptForEnter();
+                Random rnd = new Random();
+                int diceRoll = rnd.Next(1, 7) + rnd.Next(1, 7);
+                rentMultiplier = 10;
+                CollectRent(player, diceRoll);
+                updateRent();
+            }
+            else
+            {
+                PassBy();
+            }
+        }
+
         public void OnPlayerLanding(Player player, int diceRoll)
         {
             if (owner == null)
@@ -21,6 +44,7 @@ namespace monopoly
             }
             else if (owner != player)
             {
+                Console.WriteLine("This property is owned by player {0}!", owner.GetId());
                 CollectRent(player, diceRoll);
             }
             else
@@ -65,9 +89,9 @@ namespace monopoly
             }
         }
 
-        private void CollectRent(Player player, int diceRoll) {
+        private void CollectRent(Player player, int diceRoll)
+        {
             int rent = diceRoll * rentMultiplier;
-            Console.WriteLine("This property is owned by player {0}!", owner.GetId());
             Console.WriteLine("You paid player {0} ${1} ({2} x {3}).", owner.GetId(), rent, diceRoll, rentMultiplier);
             player.AddMoney(-rent);
             owner.AddMoney(rent, false);

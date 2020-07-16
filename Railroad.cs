@@ -10,6 +10,10 @@ namespace monopoly
         {
         }
 
+        public void SetRent(int rent) {
+            this.rent = rent;
+        }
+
         protected override void PromptToBuy(Player player)
         {
             int playerMoney = player.GetMoney();
