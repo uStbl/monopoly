@@ -9,13 +9,14 @@ namespace monopoly
         private List<Card> cards;
         private Game containingGame;
 
-        public Deck(bool isChest)
+        public Deck(bool isChest, Game containingGame)
         {
+            this.containingGame = containingGame;
             if (isChest)
             {
                 cards = new List<Card>
                 {
-                    new Card("Advance to GO", false, player => {player.MoveTo(containingGame.FindPosition("GO"));}),
+                    new Card("Advance to GO", false, player => {AdvanceTo(player, "GO");}),
                     new Card("Bank error in your favor - Collect $200", false, player => {player.AddMoney(200);}),
                     new Card("Doctor's fees - Pay $50", false, player => {player.AddMoney(-50);}),
                     new Card("From sale of stock you get $50", false, player => {player.AddMoney(50);}),
@@ -134,7 +135,20 @@ namespace monopoly
                 };
             }
 
-            cards.Sort();
+            Shuffle(cards);
+        }
+
+        private void Shuffle(List<Card> deck)
+        {
+            Random rnd = new Random();
+
+            for (int n = deck.Count - 1; n > 0; n--)
+            {
+                int k = rnd.Next(n + 1);
+                Card temp = deck[k];
+                deck[k] = deck[n];
+                deck[n] = temp;
+            }
         }
 
         private void AdvanceTo(Player player, string spaceName)
@@ -153,6 +167,7 @@ namespace monopoly
         public Card Cycle()
         {
             Card topCard = cards[0];
+            Console.WriteLine("You picked the card: {0}.", topCard.GetName());
             cards.Remove(topCard);
             cards.Add(topCard);
             return topCard;
@@ -162,6 +177,7 @@ namespace monopoly
         public Card Take()
         {
             Card topCard = cards[0];
+            Console.WriteLine("You picked the card: {0}. You get to keep this card!", topCard.GetName());
             cards.Remove(topCard);
             return topCard;
         }

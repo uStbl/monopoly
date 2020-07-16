@@ -9,12 +9,10 @@ namespace monopoly
     class Program
     {
         private const string path = "../../../board.json";
-        public static Dictionary<string, int> propertyGrouping;
 
         static void Main(string[] args)
         {
             List<BoardSpace> boardSpaces = FromJson(path);
-            propertyGrouping = PropertiesPerGroup(boardSpaces);
             List<Player> players = new List<Player>();
 
             Console.WriteLine("Welcome to Monopoly!");
@@ -119,10 +117,10 @@ namespace monopoly
                             spaces.Add(new Utility(jspace.name.Value, (int)jspace.price.Value, (int)jspace.multiplier.Value));
                             break;
                         case "community chest":
-                            spaces.Add(new CommunityChest(false));
+                            spaces.Add(new CommunityChest());
                             break;
                         case "chance":
-                            spaces.Add(new CommunityChest(true));
+                            spaces.Add(new Chance());
                             break;
                         default:
                             Console.WriteLine("you have a space type that you did not match");
@@ -132,34 +130,6 @@ namespace monopoly
             }
 
             return spaces;
-        }
-
-        private static Dictionary<string, int> PropertiesPerGroup(List<BoardSpace> spaces)
-        {
-            Dictionary<string, int> grouping = new Dictionary<string, int>();
-
-            foreach (BoardSpace space in spaces)
-            {
-                if (space.GetType() == typeof(Property))
-                {
-                    Property property = (Property)space;
-                    string color = property.GetColor();
-
-                    if (grouping.ContainsKey(color))
-                    {
-                        int incremented;
-                        grouping.Remove(color, out incremented);
-                        incremented++;
-                        grouping.Add(color, incremented);
-                    }
-                    else
-                    {
-                        grouping.Add(color, 1);
-                    }
-                }
-            }
-
-            return grouping;
         }
     }
 }

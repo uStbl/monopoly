@@ -8,7 +8,7 @@ namespace monopoly
     {
         private Deck deck;
 
-        public Chance(bool isChest)
+        public Chance()
         {
             name = "Chance";
         }

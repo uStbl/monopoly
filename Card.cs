@@ -4,7 +4,7 @@ using System.Text;
 
 namespace monopoly
 {
-    class Card : IComparable
+    class Card
     {
         private string name;
         private bool holdable;
@@ -24,17 +24,13 @@ namespace monopoly
             return holdable;
         }
 
-        public int CompareTo(object obj)
+        public string GetName()
         {
-            if (obj == null)
-                return 1;
-            else
-                return rnd.Next(-1, 2);
+            return name;
         }
 
         public void DoEffect(Player player)
         {
-            Console.WriteLine("You picked the card: {0}", name);
             effect(player);
         }
     }

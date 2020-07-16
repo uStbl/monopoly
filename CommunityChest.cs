@@ -8,7 +8,7 @@ namespace monopoly
     {
         private Deck deck;
 
-        public CommunityChest(bool isChest)
+        public CommunityChest()
         {
             name = "Community Chest";
         }

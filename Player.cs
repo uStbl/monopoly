@@ -23,6 +23,7 @@ namespace monopoly
             playerCount++;
             id = playerCount;
             properties = new List<Property>();
+            cards = new List<Card>();
             this.money = money;
             remainingJailTurns = 0;
         }
@@ -71,7 +72,7 @@ namespace monopoly
         {
             this.money += money;
             if (log)
-                Console.WriteLine("You now have {0}.", this.money);
+                Console.WriteLine("You now have ${0}.", this.money);
             if (this.money < 0)
                 OnBankrupt();
         }
@@ -100,7 +101,7 @@ namespace monopoly
             Console.WriteLine("You moved {0} spaces forward and landed on {1}.", spaces, containingGame.BoardSpaceAt(position).GetName());
         }
 
-        public void MoveTo(int destination, bool collectPassMoney = true)
+        public void MoveTo(int destination, bool collectPassMoney = true, bool log = true)
         {
             int spaces = DistanceTo(destination);
 
@@ -114,7 +115,8 @@ namespace monopoly
             else
                 position = destination;
 
-            Console.WriteLine("You moved {0} spaces forward and landed on {1}.", spaces, containingGame.BoardSpaceAt(position).GetName());
+            if (log)
+                Console.WriteLine("You moved {0} spaces forward and landed on {1}.", spaces, containingGame.BoardSpaceAt(position).GetName());
         }
 
         // Add money if moving [spaces] will move the player past GO.
@@ -155,26 +157,10 @@ namespace monopoly
 
             foreach (Property p in properties)
             {
-                int totalInGroup;
-                Program.propertyGrouping.TryGetValue(p.GetColor(), out totalInGroup);
-
-                if (AmountOfColor(p.GetColor()) >= totalInGroup)
-                    buildable.Add(p);
+                //TODO
             }
 
             return buildable;
-        }
-
-        private int AmountOfColor(string color)
-        {
-            int count = 0;
-            foreach (Property p in properties)
-            {
-                if (p.GetColor().Equals(color))
-                    count++;
-            }
-
-            return count;
         }
     }
 }

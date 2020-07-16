@@ -27,8 +27,8 @@ namespace monopoly
             goPosition = boardSpaces.FindIndex(space => space.GetType() == typeof(GoSpace));
             jailPosition = boardSpaces.FindIndex(space => space.GetType() == typeof(Jail));
 
-            Deck chestDeck = new Deck(true);
-            Deck chanceDeck = new Deck(false);
+            Deck chestDeck = new Deck(true, this);
+            Deck chanceDeck = new Deck(false, this);
             foreach (BoardSpace b in boardSpaces)
             {
                 b.SetGame(this);
@@ -43,7 +43,7 @@ namespace monopoly
             foreach (Player p in players)
             {
                 p.SetGame(this);
-                p.MoveTo(goPosition);
+                p.MoveTo(goPosition, false, false);
             }
 
             rnd = new Random();
@@ -124,7 +124,7 @@ namespace monopoly
                 if (input == ConsoleKey.Y)
                 {
                     Console.WriteLine("You may build on these properties:");
-
+                    // TODO print list
                     Console.WriteLine("Enter the number of the property you would like to build on.");
                     Console.Write("> ");
                     int propertyNumber = -1;
@@ -273,7 +273,7 @@ namespace monopoly
         }
 
         // Roll dice and move [player].
-        private void NormalTurn(Player player)
+        public void NormalTurn(Player player)
         {
             int rollValue1;
             int rollValue2;
