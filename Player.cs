@@ -58,6 +58,11 @@ namespace monopoly
             properties.Add(p);
         }
 
+        public void RemoveProperty(Property p)
+        {
+            properties.Remove(p);
+        }
+
         public void AddCard(Card c)
         {
             cards.Add(c);

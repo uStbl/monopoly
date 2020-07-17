@@ -58,6 +58,10 @@ namespace monopoly
             int playerMoney = player.GetMoney();
             if (playerMoney >= price)
             {
+                owner = player;
+                player.AddProperty(this);
+                updateRent();
+
                 Console.WriteLine("Would you like to purchase this property?");
                 Console.WriteLine("Your money: {0}", playerMoney);
                 Console.WriteLine("Cost of property: {0}", price);
@@ -73,13 +77,14 @@ namespace monopoly
                     {
                         Console.WriteLine("Congratulations! You have bought {0}.", name);
                         owner = player;
-                        player.AddProperty(this);
                         player.AddMoney(-price);
-                        updateRent();
                     }
                     else if (input == ConsoleKey.N)
                     {
                         Console.WriteLine("You declined to purchase the property.");
+                        owner = null;
+                        player.RemoveProperty(this);
+                        updateRent();
                     }
                 } while (!(input == ConsoleKey.Y || input == ConsoleKey.N));
             }
