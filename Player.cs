@@ -157,10 +157,29 @@ namespace monopoly
 
             foreach (Property p in properties)
             {
-                //TODO
+                if (p.GetType() == typeof(Property))
+                {
+                    int totalInGroup;
+                    containingGame.GetColorGrouping().TryGetValue(p.GetColor(), out totalInGroup);
+
+                    if (AmountOfColor(p.GetColor()) >= totalInGroup)
+                        buildable.Add(p);
+                }
             }
 
             return buildable;
+        }
+
+        private int AmountOfColor(string color)
+        {
+            int count = 0;
+            foreach (Property p in properties)
+            {
+                if (p.GetColor().Equals(color))
+                    count++;
+            }
+
+            return count;
         }
     }
 }

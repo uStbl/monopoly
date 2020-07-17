@@ -27,6 +27,11 @@ namespace monopoly
             this.houseRents = houseRents;
         }
 
+        public Player GetOwner()
+        {
+            return owner;
+        }
+
         public string GetColor()
         {
             return color;
@@ -40,6 +45,11 @@ namespace monopoly
         public int GetHouses()
         {
             return houses;
+        }
+
+        public int GetHousePrice()
+        {
+            return housePrice;
         }
 
         public override void OnPlayerLanding(Player player)
@@ -120,7 +130,7 @@ namespace monopoly
 
             bool hasMonopoly = false;
             int totalInGroup;
-            Program.propertyGrouping.TryGetValue(color, out totalInGroup);
+            containingGame.GetColorGrouping().TryGetValue(color, out totalInGroup);
 
             if (sameGroup.Count >= totalInGroup)
                 hasMonopoly = true;
@@ -161,7 +171,7 @@ namespace monopoly
                     rent = houseRents[houses - 1];
                 else
                     rent = 2 * baseRent;
-                Console.WriteLine("You built {0}! The new rent of your property is {1}.", houses == 5 ? "a hotel" : (amount == 1 ? "a house" : amount + " houses"), rent);
+                Console.WriteLine("You sold {0}! The new rent of your property is {1}.", houses == 5 ? "a hotel" : (amount == 1 ? "a house" : amount + " houses"), rent);
                 owner.AddMoney((int)(amount * .5 * housePrice));
             }
         }

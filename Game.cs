@@ -15,6 +15,7 @@ namespace monopoly
         private int goPosition;
         private int jailPosition;
         private int passMoney;
+        private Dictionary<string, int> colorGrouping;
         private List<BoardSpace> boardSpaces;
         private List<Player> players;
 
@@ -24,6 +25,7 @@ namespace monopoly
             this.boardSpaces = boardSpaces;
             this.players = players;
             this.passMoney = passMoney;
+            colorGrouping = PropertiesPerGroup();
             goPosition = boardSpaces.FindIndex(space => space.GetType() == typeof(GoSpace));
             jailPosition = boardSpaces.FindIndex(space => space.GetType() == typeof(Jail));
 
@@ -47,6 +49,38 @@ namespace monopoly
             }
 
             rnd = new Random();
+        }
+
+        private Dictionary<string, int> PropertiesPerGroup()
+        {
+            Dictionary<string, int> grouping = new Dictionary<string, int>();
+
+            foreach (BoardSpace space in boardSpaces)
+            {
+                if (space.GetType() == typeof(Property))
+                {
+                    Property property = (Property)space;
+                    string color = property.GetColor();
+
+                    if (grouping.ContainsKey(color))
+                    {
+                        int incremented;
+                        grouping.Remove(color, out incremented);
+                        incremented++;
+                        grouping.Add(color, incremented);
+                    }
+                    else
+                    {
+                        grouping.Add(color, 1);
+                    }
+                }
+            }
+            return grouping;
+        }
+
+        public Dictionary<string, int> GetColorGrouping()
+        {
+            return colorGrouping;
         }
 
         public int FindPosition(string name)
@@ -123,9 +157,9 @@ namespace monopoly
             {
                 if (input == ConsoleKey.Y)
                 {
-                    Console.WriteLine("You may build on these properties:");
-                    // TODO print list
-                    Console.WriteLine("Enter the number of the property you would like to build on.");
+                    Console.WriteLine("You may develop these properties:\n");
+                    PrintProperties(properties);
+                    Console.WriteLine("Enter the number of the property you would like to develop.");
                     Console.Write("> ");
                     int propertyNumber = -1;
 
@@ -194,6 +228,10 @@ namespace monopoly
             if (input == ConsoleKey.B)
             {
                 Console.WriteLine("How many houses would you like to buy?");
+                Console.WriteLine($"Your money: {property.GetOwner().GetMoney()}");
+                Console.WriteLine($"Price per house: {property.GetHousePrice()}");
+                Console.Write("> ");
+
                 int buyAmount = -1;
                 while (!(1 <= buyAmount && buyAmount <= 5))
                 {
@@ -215,6 +253,9 @@ namespace monopoly
             else if (input == ConsoleKey.S)
             {
                 Console.WriteLine("How many houses would you like to sell?");
+                Console.WriteLine($"Your money: {property.GetOwner().GetMoney()}");
+                Console.WriteLine($"Price per house: {property.GetHousePrice()}");
+                Console.Write("> ");
 
                 int sellAmount = -1;
                 while (!(1 <= sellAmount && sellAmount <= 5))
