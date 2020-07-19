@@ -53,6 +53,20 @@ namespace monopoly
             return properties.ToArray();
         }
 
+        public Card[] GetCards()
+        {
+            return cards.ToArray();
+        }
+
+        // Prerequisite: cards must be non-empty
+        public void UseCard()
+        {
+            Card topCard = cards[0];
+            topCard.DoEffect(this);
+            topCard.GetDeck().AddCard(topCard);
+            cards.Remove(topCard);
+        }
+
         public void AddProperty(Property p)
         {
             properties.Add(p);

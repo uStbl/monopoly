@@ -293,7 +293,30 @@ namespace monopoly
 
         private void JailTurn(Player player)
         {
-            Console.WriteLine("You are in jail. If you roll doubles, you will break out of jail and move forward.");
+            Console.Write("You are in jail. ");
+            if (player.GetCards().Length > 0)
+            {
+                Console.WriteLine("Would you like to use a get out of jail free card?");
+                Console.WriteLine("Y/N");
+
+                ConsoleKey input;
+                do
+                {
+                    input = Console.ReadKey(true).Key;
+                } while (!(input == ConsoleKey.Y || input == ConsoleKey.N));
+
+                if (input == ConsoleKey.Y)
+                {
+                    player.UseCard();
+                    return;
+                }
+                else if (input == ConsoleKey.N)
+                {
+                    Console.WriteLine("You declined to use a get out of jail free card.");
+                }
+            }
+            Console.WriteLine("If you roll doubles, you will break out of jail and move forward.");
+
             PromptForEnter();
             int rollValue1 = rnd.Next(1, 7);
             int rollValue2 = rnd.Next(1, 7);
@@ -310,6 +333,7 @@ namespace monopoly
                 player.SetRemainingJailTurns(newRemainingTurns);
                 Console.WriteLine("Unfortunately, you rolled {0} and {1}.", rollValue1, rollValue2);
                 Console.WriteLine("You must remain in jail for {0} more turns.", newRemainingTurns);
+
             }
         }
 
