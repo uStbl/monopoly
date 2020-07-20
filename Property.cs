@@ -155,7 +155,7 @@ namespace monopoly
             {
                 houses += amount;
                 rent = houseRents[houses - 1];
-                Console.WriteLine("You built {0}! The new rent of your property is {1}.", houses == 5 ? "a hotel" : (amount == 1 ? "a house" : amount + "houses"), rent);
+                Console.WriteLine("You built {0}! The new rent of your property is {1}.", houses == 5 ? "a hotel" : (amount == 1 ? "a house" : amount + " houses"), rent);
                 owner.AddMoney(-amount * housePrice);
             }
         }

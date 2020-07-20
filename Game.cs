@@ -113,8 +113,10 @@ namespace monopoly
             bool gameIsOver = false;
             while (!gameIsOver)
             {
-                foreach (Player currentPlayer in players)
+                for (int i = 0; i < players.Count; i++)
                 {
+                    Player currentPlayer = players[i];
+
                     Console.WriteLine("It is player {0}'s turn.", currentPlayer.GetId());
 
                     List<Property> buildables = currentPlayer.BuildableProperties();
@@ -125,13 +127,13 @@ namespace monopoly
                     if (currentPlayer.GetRemainingJailTurns() > 0)
                         JailTurn(currentPlayer);
                     else
-                        DevTurn(currentPlayer);
+                        NormalTurn(currentPlayer);
 
                     Console.WriteLine("-------------------------------------------------");
 
                     if (currentPlayer.HasLost())
                     {
-                        players.RemoveAt(currentPlayer.GetId() - 1);
+                        players.RemoveAt(i);
                         if (players.Count <= 1)
                         {
                             gameIsOver = true;
