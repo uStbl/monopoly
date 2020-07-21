@@ -23,7 +23,7 @@ namespace monopoly
             {
                 Console.WriteLine("This property is owned by player {0}!", owner.GetId());
                 Console.WriteLine("Roll dice to determine the rent you owe. Rent will be ten times the amount thrown.");
-                containingGame.PromptForEnter();
+                Game.PromptForEnter();
                 Random rnd = new Random();
                 int diceRoll = rnd.Next(1, 7) + rnd.Next(1, 7);
                 rentMultiplier = 10;

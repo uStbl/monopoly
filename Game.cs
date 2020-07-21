@@ -150,19 +150,14 @@ namespace monopoly
         {
             Console.WriteLine("Would you like to buy or sell houses or hotels?");
             Console.WriteLine("Y/N");
-            ConsoleKey input;
-            do
-            {
-                input = Console.ReadKey(true).Key;
-            } while (!(input == ConsoleKey.Y || input == ConsoleKey.N));
+            ConsoleKey input = ReadYN();
             while (input != ConsoleKey.N)
             {
                 if (input == ConsoleKey.Y)
                 {
                     Console.WriteLine("You may develop these properties:\n");
                     PrintProperties(properties);
-                    Console.WriteLine("Enter the number of the property you would like to develop.");
-                    Console.Write("> ");
+                    Console.Write("Enter the number of the property you would like to develop: ");
                     int propertyNumber = -1;
 
                     while (propertyNumber == -1)
@@ -170,15 +165,13 @@ namespace monopoly
                         try
                         {
                             propertyNumber = Convert.ToInt32(Console.ReadLine().Trim());
+                            if (propertyNumber < 1 || propertyNumber > properties.Count)
+                                throw new IndexOutOfRangeException();
                         }
                         catch (Exception e)
                         {
                             Console.WriteLine("You have entered an invalid value. Please enter the number of a property.");
-                        }
-
-                        if (propertyNumber < 1 || propertyNumber > properties.Count)
-                        {
-                            Console.WriteLine("You have entered an invalid value. Please enter the number of a property.");
+                            Console.Write("> ");
                             propertyNumber = -1;
                         }
                     }
@@ -187,10 +180,7 @@ namespace monopoly
 
                     Console.WriteLine("Would you like to buy or sell on any other properties?");
                     Console.WriteLine("Y/N");
-                    do
-                    {
-                        input = Console.ReadKey(true).Key;
-                    } while (!(input == ConsoleKey.Y || input == ConsoleKey.N));
+                    input = ReadYN();
 
                     if (input == ConsoleKey.N)
                         Console.WriteLine("You declined to buy or sell houses or hotels.");
@@ -229,53 +219,31 @@ namespace monopoly
 
             if (input == ConsoleKey.B)
             {
-                Console.WriteLine("How many houses would you like to buy?");
                 Console.WriteLine($"Your money: {property.GetOwner().GetMoney()}");
                 Console.WriteLine($"Price per house: {property.GetHousePrice()}");
-                Console.Write("> ");
+                Console.WriteLine($"Buy a {(property.GetHouses() >= 4? "hotel" : "house")}?");
+                Console.WriteLine("Y/N");
 
-                int buyAmount = -1;
-                while (!(1 <= buyAmount && buyAmount <= 5))
-                {
-                    string inputLine = Console.ReadLine().Trim();
-                    try
-                    {
-                        buyAmount = Int32.Parse(inputLine);
-                        if (!(1 <= buyAmount && buyAmount <= 5))
-                            throw new System.ArgumentOutOfRangeException();
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine("You have entered an invalid value. Please enter a number between 1 and 5.");
-                    }
-                }
+                ConsoleKey input2 = ReadYN();
 
-                property.tryBuy(buyAmount);
+                if (input2 == ConsoleKey.Y)
+                    property.tryBuy();
+                else if (input2 == ConsoleKey.N)
+                    Console.WriteLine($"You declined to buy a {(property.GetHouses() >= 4? "hotel" : "house")}.");
             }
             else if (input == ConsoleKey.S)
             {
-                Console.WriteLine("How many houses would you like to sell?");
                 Console.WriteLine($"Your money: {property.GetOwner().GetMoney()}");
-                Console.WriteLine($"Price per house: {property.GetHousePrice()}");
-                Console.Write("> ");
+                Console.WriteLine($"Sell price per house: {.5 * property.GetHousePrice()}");
+                Console.WriteLine($"Sell a {(property.GetHouses() >= 4 ? "hotel" : "house")}?");
+                Console.WriteLine("Y/N");
 
-                int sellAmount = -1;
-                while (!(1 <= sellAmount && sellAmount <= 5))
-                {
-                    string inputLine = Console.ReadLine().Trim();
-                    try
-                    {
-                        sellAmount = Int32.Parse(inputLine);
-                        if (!(1 <= sellAmount && sellAmount <= 5))
-                            throw new System.ArgumentOutOfRangeException();
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine("You have entered an invalid value. Please enter a number between 1 and 5.");
-                    }
-                }
+                ConsoleKey input2 = ReadYN();
 
-                property.trySell(sellAmount);
+                if (input2 == ConsoleKey.Y)
+                    property.trySell();
+                else if (input2 == ConsoleKey.N)
+                    Console.WriteLine($"You declined to sell a {(property.GetHouses() >= 5 ? "hotel" : "house")}.");
             }
             else if (input == ConsoleKey.C)
             {
@@ -283,7 +251,7 @@ namespace monopoly
             }
         }
 
-        public void PromptForEnter()
+        public static void PromptForEnter()
         {
             Console.WriteLine("Press enter to roll dice.");
             ConsoleKey input;
@@ -291,6 +259,16 @@ namespace monopoly
             {
                 input = Console.ReadKey(true).Key;
             } while (input != ConsoleKey.Enter);
+        }
+
+        public static ConsoleKey ReadYN()
+        {
+            ConsoleKey input;
+            do
+            {
+                input = Console.ReadKey(true).Key;
+            } while (!(input == ConsoleKey.Y || input == ConsoleKey.N));
+            return input;
         }
 
         private void JailTurn(Player player)
@@ -301,11 +279,7 @@ namespace monopoly
                 Console.WriteLine("Would you like to use a get out of jail free card?");
                 Console.WriteLine("Y/N");
 
-                ConsoleKey input;
-                do
-                {
-                    input = Console.ReadKey(true).Key;
-                } while (!(input == ConsoleKey.Y || input == ConsoleKey.N));
+                ConsoleKey input = ReadYN();
 
                 if (input == ConsoleKey.Y)
                 {

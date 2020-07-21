@@ -52,6 +52,11 @@ namespace monopoly
             return housePrice;
         }
 
+        public int[] GetHouseRents()
+        {
+            return houseRents;
+        }
+
         public override void OnPlayerLanding(Player player)
         {
             if (owner == null)
@@ -80,11 +85,7 @@ namespace monopoly
                 Console.WriteLine("Rent amount: {0}", rent);
                 Console.WriteLine("Y/N");
 
-                ConsoleKey input;
-                do
-                {
-                    input = Console.ReadKey(true).Key;
-                } while (!(input == ConsoleKey.Y || input == ConsoleKey.N));
+                ConsoleKey input = Game.ReadYN();
 
                 if (input == ConsoleKey.Y)
                 {
@@ -97,11 +98,97 @@ namespace monopoly
                 else if (input == ConsoleKey.N)
                 {
                     Console.WriteLine("You declined to purchase the property.");
+                    Auction();
                 }
             }
             else
             {
                 Console.WriteLine("You do not have enough money to purchase this property. Too bad!");
+                Auction();
+            }
+        }
+
+        private void Auction()
+        {
+            Console.WriteLine("\nAn auction has begun for {0}!", name);
+
+            bool auctionInProcess = true;
+            Player[] players = containingGame.GetPlayers();
+            bool[] biddedThisRound = new bool[players.Length];
+            int highestBid = 0;
+            Player highestBidder = null;
+
+            while (auctionInProcess)
+            {
+                for (int i = 0; i < biddedThisRound.Length; i++)
+                    biddedThisRound[i] = false;
+
+                for (int i = 0; i < players.Length; i++)
+                {
+                    Player p = players[i];
+
+                    Console.WriteLine("It is player {0}'s turn to bid.", p.GetId());
+                    Console.WriteLine("Would you like to make a bid?");
+                    Console.WriteLine("Y/N");
+                    ConsoleKey input = Game.ReadYN();
+
+                    if (input == ConsoleKey.Y)
+                    {
+                        int bidAmount = 0;
+                        while (bidAmount == 0)
+                        {
+                            Console.Write("Enter the amount you would like to bid (enter -1 to cancel): ");
+                            try
+                            {
+                                bidAmount = Convert.ToInt32(Console.ReadLine().Trim());
+                                if (bidAmount != -1 && bidAmount <= highestBid)
+                                {
+                                    Console.WriteLine("You have entered an invalid value. Enter a non-negative number higher than the current highest bid of ${0}.", highestBid);
+                                    throw new Exception();
+                                }
+                                if (p.GetMoney() < bidAmount)
+                                {
+                                    Console.WriteLine("You do not have that much money.");
+                                    throw new Exception();
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                bidAmount = 0;
+                            }
+                        }
+                        highestBid = bidAmount;
+                        highestBidder = p;
+                        biddedThisRound[i] = true;
+                    }
+                    else if (input == ConsoleKey.N)
+                    {
+                        Console.WriteLine("You declined to make a bid.");
+                    }
+                    Console.WriteLine();
+                }
+                bool everyonePassed = true;
+                for (int i = 0; i < biddedThisRound.Length; i++)
+                {
+                    if (biddedThisRound[i] == true)
+                        everyonePassed = false;
+                }
+
+                if (everyonePassed)
+                {
+                    if (highestBidder != null)
+                    {
+                        Console.WriteLine("Player {0} won the auction with a bid of ${1} and bought {2}!", highestBidder.GetId(), highestBid, name);
+                        owner = highestBidder;
+                        highestBidder.AddMoney(-highestBid, false);
+                        Console.WriteLine("Player {0} now has ${1}.", highestBidder.GetId(), highestBidder.GetMoney());
+                    }
+                    else
+                    {
+                        Console.WriteLine("Nobody wanted to buy {0}.", name);
+                    }
+                    auctionInProcess = false;
+                }
             }
         }
 
@@ -145,34 +232,50 @@ namespace monopoly
             }
         }
 
-        public void tryBuy(int amount)
+        public void tryBuy()
         {
-            if (houses + amount > 5)
-                Console.WriteLine("You cannot build that many houses on this property.");
-            else if (owner.GetMoney() < amount * housePrice)
+            List<Property> buildables = owner.BuildableProperties();
+            foreach (Property p in buildables)
+                if (p.GetColor() == color && houses > p.houses)
+                {
+                    Console.WriteLine("You must build evenly. One or more of your other properties in this color group does not have enough houses.");
+                    return;
+                }
+
+            if (houses >= 5)
+                Console.WriteLine("You already have a hotel on this property.");
+            else if (owner.GetMoney() < housePrice)
                 Console.WriteLine("You do not have enough money to buy that many houses.");
             else
             {
-                houses += amount;
+                houses++;
                 rent = houseRents[houses - 1];
-                Console.WriteLine("You built {0}! The new rent of your property is {1}.", houses == 5 ? "a hotel" : (amount == 1 ? "a house" : amount + " houses"), rent);
-                owner.AddMoney(-amount * housePrice);
+                Console.WriteLine("You built {0}! The new rent of your property is {1}.", houses == 5 ? "a hotel" : "a house", rent);
+                owner.AddMoney(-housePrice);
             }
         }
 
-        public void trySell(int amount)
+        public void trySell()
         {
-            if (houses - amount < 0)
-                Console.WriteLine("You do not have that many houses on this property.");
+            List<Property> buildables = owner.BuildableProperties();
+            foreach (Property p in buildables)
+                if (p.GetColor() == color && houses < p.houses)
+                {
+                    Console.WriteLine("You must sell evenly. One or more of your other properties in this color group has too many houses.");
+                    return;
+                }
+
+            if (houses <= 0)
+                Console.WriteLine("You do not have any houses on this property.");
             else
             {
-                houses -= amount;
+                houses--;
                 if (houses > 0)
                     rent = houseRents[houses - 1];
                 else
                     rent = 2 * baseRent;
-                Console.WriteLine("You sold {0}! The new rent of your property is {1}.", houses == 5 ? "a hotel" : (amount == 1 ? "a house" : amount + " houses"), rent);
-                owner.AddMoney((int)(amount * .5 * housePrice));
+                Console.WriteLine("You sold {0}! The new rent of your property is {1}.", houses == 4 ? "a hotel" : "a house", rent);
+                owner.AddMoney((int)(.5 * housePrice));
             }
         }
     }
