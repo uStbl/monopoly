@@ -127,6 +127,16 @@ namespace monopoly
                 {
                     Player p = players[i];
 
+                    if (highestBidder == p)
+                    {
+                        Console.WriteLine("Player {0} won the auction with a bid of ${1} and bought {2}!", highestBidder.GetId(), highestBid, name);
+                        owner = highestBidder;
+                        highestBidder.AddMoney(-highestBid, false);
+                        Console.WriteLine("Player {0} now has ${1}.", highestBidder.GetId(), highestBidder.GetMoney());
+                        auctionInProcess = false;
+                        break;
+                    }
+
                     Console.WriteLine("It is player {0}'s turn to bid.", p.GetId());
                     Console.WriteLine("Would you like to make a bid?");
                     Console.WriteLine("Y/N");
@@ -157,9 +167,12 @@ namespace monopoly
                                 bidAmount = 0;
                             }
                         }
-                        highestBid = bidAmount;
-                        highestBidder = p;
-                        biddedThisRound[i] = true;
+                        if (bidAmount != -1)
+                        {
+                            highestBid = bidAmount;
+                            highestBidder = p;
+                            biddedThisRound[i] = true;
+                        }
                     }
                     else if (input == ConsoleKey.N)
                     {
@@ -167,26 +180,10 @@ namespace monopoly
                     }
                     Console.WriteLine();
                 }
-                bool everyonePassed = true;
-                for (int i = 0; i < biddedThisRound.Length; i++)
-                {
-                    if (biddedThisRound[i] == true)
-                        everyonePassed = false;
-                }
 
-                if (everyonePassed)
+                if (highestBidder == null)
                 {
-                    if (highestBidder != null)
-                    {
-                        Console.WriteLine("Player {0} won the auction with a bid of ${1} and bought {2}!", highestBidder.GetId(), highestBid, name);
-                        owner = highestBidder;
-                        highestBidder.AddMoney(-highestBid, false);
-                        Console.WriteLine("Player {0} now has ${1}.", highestBidder.GetId(), highestBidder.GetMoney());
-                    }
-                    else
-                    {
-                        Console.WriteLine("Nobody wanted to buy {0}.", name);
-                    }
+                    Console.WriteLine("Nobody wanted to buy {0}.", name);
                     auctionInProcess = false;
                 }
             }
