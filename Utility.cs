@@ -84,7 +84,7 @@ namespace monopoly
                         Console.WriteLine("You declined to purchase the property.");
                         owner = null;
                         player.RemoveProperty(this);
-                        updateRent();
+                        rentMultiplier = 4;
                     }
                 } while (!(input == ConsoleKey.Y || input == ConsoleKey.N));
             }
